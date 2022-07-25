@@ -17,7 +17,7 @@ abstract class TestCase extends BaseTestCase {
 
     public function createApplication(): Application {
         // Create the application.
-        $app = new Application(Application::TESTING, $this->path);
+        $app = new Application($this->path, Application::TESTING);
 
         // Add the modules.
         $app->modules

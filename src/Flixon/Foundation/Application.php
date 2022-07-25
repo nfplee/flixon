@@ -62,7 +62,7 @@ class Application {
      */
     protected $registered = false;
 
-    public function __construct(string $environment = Application::PRODUCTION, string $path = __DIR__ . '/../../..') {
+    public function __construct(string $path = __DIR__ . '/../../..', string $environment = Application::PRODUCTION) {
         // Create and start the stopwatch.
         $this->stopwatch = (new Stopwatch())->start();
 
@@ -74,9 +74,9 @@ class Application {
             ->add(Application::class, $this)->map('app', Application::class)
             ->add(Container::class, $this->container);
 
-        // Set the environment and root path.
-        $this->environment = $environment;
+        // Set the root path and environment.
         $this->path = $path;
+        $this->environment = $environment;
 
         // Create the middleware collection.
         $this->middleware = new MiddlewareCollection();
