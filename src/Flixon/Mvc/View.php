@@ -2,6 +2,7 @@
 
 namespace Flixon\Mvc;
 
+use Flixon\Foundation\Application;
 use Flixon\Config\Config;
 use Flixon\Http\Request;
 use Flixon\Templating\Template;
@@ -10,6 +11,7 @@ use Flixon\Templating\Template;
  * This class must extend Template rather that take a dependency on it. This allows you to say $this within the view/template and it will point to an instance of this class.
  */
 class View extends Template {
+	private $path;
 	protected $body, $section = [];
 
 	public $layout;
@@ -24,7 +26,8 @@ class View extends Template {
 	 */
 	protected $request;
 
-	public function __construct(Config $config, Request $request) {
+	public function __construct(Application $app, Config $config, Request $request) {
+		$this->path = $app->path;
     	$this->layout = 'themes/' . $config->theming->defaultTheme . '/views/shared/layout';
     	$this->request = $request;
     }
@@ -46,11 +49,11 @@ class View extends Template {
         $this->model = array_merge($this->model, $model);
 
 		// Get the body contents.
-		$this->body = parent::render(__DIR__ . '/../../../resources/views/' . $view . '.php', $this->model);
+		$this->body = parent::render($this->path . '/resources/views/' . $view . '.php', $this->model);
 
         // Return the content.
 		if (!empty($this->layout) && $layout) {
-			return parent::render(__DIR__ . '/../../../resources/' . $this->layout . '.php', $this->model);
+			return parent::render($this->path . '/resources/' . $this->layout . '.php', $this->model);
 		} else {
 			return $this->body;
 		}
@@ -65,6 +68,6 @@ class View extends Template {
 	}
 
     public function template(string $template, array $model = []) {
-        return parent::render(__DIR__ . '/../../../resources/views/shared/templates/' . $template . '.php', $model);
+        return parent::render($this->path . '/resources/views/shared/templates/' . $template . '.php', $model);
     }
 }

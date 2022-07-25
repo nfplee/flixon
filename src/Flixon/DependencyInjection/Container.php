@@ -23,12 +23,12 @@ class Container implements ArrayAccess {
 
     protected $annotationReader, $instances = [], $map = [];
 
-    public function __construct(string $environment) {
+    public function __construct(string $environment, string $path = __DIR__ . '/../../..') {
         // Store the current instance in a static variable so we can call this class statically.
         static::$current = $this;
 
         // Add container dependencies.
-        $this->annotationReader = $this->add(Reader::class, new FileCacheReader(new AnnotationReader(), __DIR__ . '/../../../resources/cache', $debug = $environment != Application::PRODUCTION))->get(Reader::class);
+        $this->annotationReader = $this->add(Reader::class, new FileCacheReader(new AnnotationReader(), $path . '/resources/cache', $debug = $environment != Application::PRODUCTION))->get(Reader::class);
     }
 
     /**

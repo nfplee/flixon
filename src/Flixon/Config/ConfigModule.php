@@ -12,7 +12,7 @@ class ConfigModule extends Module {
 			$config = new Config(['environment' => $app->environment]);
 
 	        // Load the config.
-	        $config->load(__DIR__ . '/../../../config');
+	        $config->load($app->path . '/config');
 
             return $config;
         }, $app->environment == Application::PRODUCTION ? 60 * 60 : 60, false);

@@ -2,8 +2,14 @@
 
 namespace Flixon\Common\Services;
 
+use Flixon\Foundation\Application;
+
 class FileCachingService implements CachingService {
-	private $path = __DIR__ . '/../../../../resources/cache';
+	private $path;
+
+    public function __construct(Application $app) {
+		$this->path = $app->path . '/resources/cache/';
+    }
 
 	/**
 	 * Get item from cache.

@@ -2,6 +2,7 @@
 
 namespace Flixon\Localization\Services;
 
+use Flixon\Foundation\Application;
 use Flixon\Http\Request;
 
 class LanguageService {
@@ -13,6 +14,12 @@ class LanguageService {
      * @var array
      */
     private $data;
+    
+    private $path;
+
+    public function __construct(Application $app) {
+		$this->path = $app->path . '/resources/lang/';
+    }
 
 	/**
      * Load language by locale.
@@ -21,7 +28,7 @@ class LanguageService {
      * @param string $name
      */
     public function load(string $locale) {
-        $file = __DIR__ . '/../../../../resources/lang/' . $locale . '.php';
+        $file = $this->path . '/resources/lang/' . $locale . '.php';
 
         if (is_readable($file)) {
             $this->data[$locale] = require $file;

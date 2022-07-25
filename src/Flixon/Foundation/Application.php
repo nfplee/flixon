@@ -42,6 +42,13 @@ class Application {
     public $modules;
 
     /**
+     * The root path.
+     *
+     * @var const
+     */
+    public $path;
+
+    /**
      * The application stopwatch.
      *
      * @var \Flixon\Foundation\Stopwatch
@@ -55,20 +62,21 @@ class Application {
      */
     protected $registered = false;
 
-    public function __construct(string $environment = Application::PRODUCTION) {
+    public function __construct(string $environment = Application::PRODUCTION, string $path = __DIR__ . '/../../..') {
         // Create and start the stopwatch.
         $this->stopwatch = (new Stopwatch())->start();
 
         // Create the container
-        $this->container = new Container($environment);
+        $this->container = new Container($environment, $path);
 
         // Add the current instance (including an alias) and the container itself to the container.
         $this->container
             ->add(Application::class, $this)->map('app', Application::class)
             ->add(Container::class, $this->container);
 
-        // Set the environment.
+        // Set the environment and root path.
         $this->environment = $environment;
+        $this->path = $path;
 
         // Create the middleware collection.
         $this->middleware = new MiddlewareCollection();
