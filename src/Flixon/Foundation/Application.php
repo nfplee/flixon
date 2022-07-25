@@ -66,7 +66,7 @@ class Application {
         // Create and start the stopwatch.
         $this->stopwatch = (new Stopwatch())->start();
 
-        // Create the container
+        // Create the container.
         $this->container = new Container($environment, $path);
 
         // Add the current instance (including an alias) and the container itself to the container.
@@ -93,7 +93,7 @@ class Application {
         // Add the request to the container and an alias.
         $this->container->add(Request::class, $request)->map('request', Request::class);
 
-        // Handle the request
+        // Handle the request.
         return $this->container->get(Pipeline::class)->pipe($this->middleware)->handle($request);
     }
 
