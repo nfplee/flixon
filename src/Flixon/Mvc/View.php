@@ -2,8 +2,8 @@
 
 namespace Flixon\Mvc;
 
-use Flixon\Foundation\Application;
 use Flixon\Config\Config;
+use Flixon\Foundation\Application;
 use Flixon\Http\Request;
 use Flixon\Templating\Template;
 

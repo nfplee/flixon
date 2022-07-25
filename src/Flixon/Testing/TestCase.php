@@ -13,9 +13,11 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 abstract class TestCase extends BaseTestCase {
     use \Flixon\Foundation\Traits\Application;
 
-    public function createApplication(string $path = __DIR__ . '/../../..'): Application {
+    protected $path = __DIR__ . '/../../..';
+
+    public function createApplication(): Application {
         // Create the application.
-        $app = new Application(Application::TESTING, $path);
+        $app = new Application(Application::TESTING, $this->path);
 
         // Add the modules.
         $app->modules
