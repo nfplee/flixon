@@ -1,0 +1,10 @@
+resources/cache
+
+# Composer
+
+composer.lock
+vendor
+
+# Visual Studio
+
+.vscode
