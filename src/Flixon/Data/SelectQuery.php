@@ -114,7 +114,7 @@ class SelectQuery extends BaseSelectQuery {
 		// Work out the from alias (fallback to the from alias if no parent).
 		$fromAlias = Utilities::contains($name, '.') ? str_replace('.', '_', substr($name, 0, strrpos($name, '.'))) : $this->fromAlias;
 
-		// Get the join string
+		// Get the join string.
 		// TODO: Should this support multiple primary keys by allowing the foreignKey to be an array aswell?
 		$join = $table . ' AS `' . $alias . '` ON ' . $this->structure->getPrimaryKey($table, $alias . '.')[0] . ' = ' . $fromAlias . '.' . $foreignKey;
 

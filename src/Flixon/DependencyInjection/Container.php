@@ -87,7 +87,7 @@ class Container implements ArrayAccess {
 	    // Create an instance of the class.
 	    $instance = $reflectionClass->newInstanceArgs($arguments);
 
-        // Inject the properties
+        // Inject the properties.
         foreach ($reflectionClass->getProperties() as $property) {
             // Try to get an inject annotation.
             $annotation = $this->annotationReader->getPropertyAnnotation($property, Inject::class);
