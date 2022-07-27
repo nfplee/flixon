@@ -8,7 +8,7 @@ class FileCachingService implements CachingService {
 	private $path;
 
     public function __construct(Application $app) {
-		$this->path = $app->path . '/resources/cache/';
+		$this->path = $app->rootPath . '/resources/cache/';
     }
 
 	/**

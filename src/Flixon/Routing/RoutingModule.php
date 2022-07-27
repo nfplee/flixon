@@ -24,8 +24,8 @@ class RoutingModule extends Module {
             $loader = new AnnotationDirectoryLoader(new FileLocator(), new AnnotatedRouteControllerLoader($app->container->get(AnnotationReader::class)));
 
             // Add the routes.
-            if (file_exists($app->path . '/app/Controllers')) {
-                $routes->addCollection($loader->load($app->path . '/app/Controllers')); // Note: Remove /Controllers to make this more modular.
+            if (file_exists($app->rootPath . '/app/Controllers')) {
+                $routes->addCollection($loader->load($app->rootPath . '/app/Controllers')); // Note: Remove /Controllers to make this more modular.
             }
 
             return $routes;

@@ -18,7 +18,7 @@ class LanguageService {
     private $path;
 
     public function __construct(Application $app) {
-		$this->path = $app->path . '/resources/lang/';
+		$this->path = $app->rootPath . '/resources/lang/';
     }
 
 	/**
@@ -28,7 +28,7 @@ class LanguageService {
      * @param string $name
      */
     public function load(string $locale) {
-        $file = $this->path . '/resources/lang/' . $locale . '.php';
+        $file = $this->path . $locale . '.php';
 
         if (is_readable($file)) {
             $this->data[$locale] = require $file;

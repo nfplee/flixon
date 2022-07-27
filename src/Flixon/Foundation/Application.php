@@ -46,7 +46,7 @@ class Application {
      *
      * @var const
      */
-    public $path;
+    public $rootPath;
 
     /**
      * The application stopwatch.
@@ -62,12 +62,12 @@ class Application {
      */
     protected $registered = false;
 
-    public function __construct(string $path = __DIR__ . '/../../..', string $environment = Application::PRODUCTION) {
+    public function __construct(string $rootPath = __DIR__ . '/../../..', string $environment = Application::PRODUCTION) {
         // Create and start the stopwatch.
         $this->stopwatch = (new Stopwatch())->start();
 
         // Create the container.
-        $this->container = new Container($environment, $path);
+        $this->container = new Container($environment, $rootPath);
 
         // Add the current instance (including an alias) and the container itself to the container.
         $this->container
@@ -75,7 +75,7 @@ class Application {
             ->add(Container::class, $this->container);
 
         // Set the root path and environment.
-        $this->path = $path;
+        $this->rootPath = $rootPath;
         $this->environment = $environment;
 
         // Create the middleware collection.

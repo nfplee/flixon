@@ -11,8 +11,7 @@ use Flixon\Templating\Template;
  * This class must extend Template rather that take a dependency on it. This allows you to say $this within the view/template and it will point to an instance of this class.
  */
 class View extends Template {
-	private $path;
-	protected $body, $section = [];
+	protected $body, $rootPath, $section = [];
 
 	public $layout;
 
@@ -27,7 +26,7 @@ class View extends Template {
 	protected $request;
 
 	public function __construct(Application $app, Config $config, Request $request) {
-		$this->path = $app->path;
+		$this->rootPath = $app->rootPath;
     	$this->layout = 'themes/' . $config->theming->defaultTheme . '/views/shared/layout';
     	$this->request = $request;
     }
@@ -49,11 +48,11 @@ class View extends Template {
         $this->model = array_merge($this->model, $model);
 
 		// Get the body contents.
-		$this->body = parent::render($this->path . '/resources/views/' . $view . '.php', $this->model);
+		$this->body = parent::render($this->rootPath . '/resources/views/' . $view . '.php', $this->model);
 
         // Return the content.
 		if (!empty($this->layout) && $layout) {
-			return parent::render($this->path . '/resources/' . $this->layout . '.php', $this->model);
+			return parent::render($this->rootPath . '/resources/' . $this->layout . '.php', $this->model);
 		} else {
 			return $this->body;
 		}
@@ -68,6 +67,6 @@ class View extends Template {
 	}
 
     public function template(string $template, array $model = []) {
-        return parent::render($this->path . '/resources/views/shared/templates/' . $template . '.php', $model);
+        return parent::render($this->rootPath . '/resources/views/shared/templates/' . $template . '.php', $model);
     }
 }

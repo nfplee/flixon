@@ -41,7 +41,7 @@ class FileLogger implements Logger {
             $name = (strlen($url) > 1 ? $url . '-' : '') . round(microtime(true) * 1000) . '.txt';
             
             // Write the log file.
-            file_put_contents($this->app->path . '/resources/logs/' . $name, Enumerable::from($this->logs)->map(function($log) {
+            file_put_contents($this->app->rootPath . '/resources/logs/' . $name, Enumerable::from($this->logs)->map(function($log) {
                 return $log->message . ' - ' . $log->time . ' - ' . $log->elapsed . ($log->elapsed > 0.01 ? ' WARNING' : '');
             })->toString(PHP_EOL));
         }
