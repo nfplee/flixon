@@ -1,5 +1,6 @@
 <?php
 
 return [
-	'allowedQueryParameters' => []
+	'allowedQueryParameters' => [],
+	'responseCacheEnabled' => true
 ];

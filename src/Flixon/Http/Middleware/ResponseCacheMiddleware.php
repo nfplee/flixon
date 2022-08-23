@@ -24,8 +24,8 @@ class ResponseCacheMiddleware extends Middleware {
     }
 
     public function __invoke(Request $request, Response $response, callable $next = null) {
-        // Try to get a response cache attribute.
-        $responseCache = $request->attributes->has('_annotations') ? Enumerable::from($request->attributes->get('_annotations'))->filter(function($annotation) {
+        // Try to get a response cache attribute (if response caching is enabled).
+        $responseCache = $this->config->http->responseCacheEnabled && $request->attributes->has('_annotations') ? Enumerable::from($request->attributes->get('_annotations'))->filter(function($annotation) {
             return $annotation instanceof ResponseCache;
         })->first() : null;
 
