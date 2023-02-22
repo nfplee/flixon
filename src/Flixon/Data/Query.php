@@ -3,6 +3,7 @@
 namespace Flixon\Data;
 
 use Doctrine\Common\Annotations\Reader as AnnotationReader;
+use Exception;
 use Flixon\Common\Collections\Enumerable;
 use Flixon\Common\Inflector;
 use Flixon\Common\Utilities;
@@ -121,8 +122,12 @@ class Query {
         // Get the primary key.
         $primaryKey = $db->structure->getPrimaryKey($table);
 
+		if (count($primaryKey) > 0) {
+			throw new Exception('Fluent PDO does not support deleting from tables with multiple primary keys.');
+		}
+
         // Delete the entity.
-        return $db->deleteFrom($table, $entity->get($primaryKey))->execute();
+        return $db->deleteFrom($table, $entity->get($primaryKey)[0])->execute();
     }
 
     /**

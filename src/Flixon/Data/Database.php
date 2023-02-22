@@ -67,7 +67,7 @@ class Database extends \Envms\FluentPDO\Query {
         return $query;
     }
 
-    private function filterByPrimaryKey(Common $query, ?string $table, $primaryKey, string $prefix = ''): Common {
+    private function filterByPrimaryKey(Common $query, ?string $table, mixed $primaryKey, string $prefix = ''): Common {
         // Construct the where clause.
         $where = array_combine($this->structure->getPrimaryKey($table, $prefix), !is_array($primaryKey) ? [$primaryKey] : $primaryKey);
 
