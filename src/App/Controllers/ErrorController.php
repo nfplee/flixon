@@ -9,7 +9,7 @@ use Throwable;
 
 #[Route('/error', name: 'error_')]
 class ErrorController extends Controller {
-    #[Route('/', name: 'home')]
+    #[Route(name: 'home')]
     public function index(Throwable $exception) {
         return $this->render('error/index', [
             'exception'    => $exception

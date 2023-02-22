@@ -11,8 +11,8 @@ use Flixon\Security\Roles;
 #[Authorize(Roles::ADMIN)]
 #[Route('/admin', name: 'admin_')]
 class AdminController extends Controller {
-    #[Route('/{slug}', name: 'home')]
-    public function index(string $slug = null): Response {
+    #[Route(name: 'home')]
+    public function index(): Response {
         return $this->content('Admin | ' . $this->request->user->username);
     }
 }
