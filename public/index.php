@@ -6,7 +6,7 @@ use Flixon\Foundation\Application;
 use Flixon\Foundation\Environment;
 
 // Create the application.
-$app = new Application(__DIR__ . '/..', Environment::DEVELOPMENT);
+$app = new Application(Environment::DEVELOPMENT);
 
 // Add the modules.
 $app->modules

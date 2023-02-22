@@ -3,7 +3,6 @@
 namespace Flixon\Foundation;
 
 use Flixon\DependencyInjection\Container;
-use Flixon\Foundation\Stopwatch;
 use Flixon\Http\Pipeline;
 use Flixon\Http\Request;
 use Flixon\Http\Response;
@@ -44,7 +43,7 @@ class Application {
      */
     protected bool $registered = false;
 
-    public function __construct(string $rootPath = __DIR__ . '/../../..', string $environment = Environment::PRODUCTION) {
+    public function __construct(string $environment = Environment::PRODUCTION, string $rootPath = __DIR__ . '/../../..') {
         // Create and start the stopwatch.
         $this->stopwatch = (new Stopwatch())->start();
 
@@ -56,9 +55,9 @@ class Application {
             ->add(Application::class, $this)->map('app', Application::class)
             ->add(Container::class, $this->container);
 
-        // Set the root path and environment.
-        $this->rootPath = $rootPath;
+        // Set the environment and root path.
         $this->environment = $environment;
+        $this->rootPath = $rootPath;
 
         // Create the middleware collection.
         $this->middleware = new MiddlewareCollection();
