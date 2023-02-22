@@ -97,7 +97,7 @@ class ResponseCacheMiddleware extends Middleware {
             // If it's the root cached request then remove the cache wrapper else add the wrapper so that the parent cache includes the placeholder.
             if (!$request->isChildRequest() || !$request->parent->attributes->has('_cache')) {
 				$response->content = preg_replace('/<cache.*?>(.*?)<\/cache>/s', '$1', $response->content);
-			} else {
+            } else {
                 $response->content = '<cache controller="' . $request->attributes->get('_controller') . '">' . $response->content . '</cache>';
 			}
         }
