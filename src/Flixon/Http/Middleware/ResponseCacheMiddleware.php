@@ -99,7 +99,7 @@ class ResponseCacheMiddleware extends Middleware {
 				$response->content = preg_replace('/<cache.*?>(.*?)<\/cache>/s', '$1', $response->content);
             } else {
                 $response->content = '<cache controller="' . $request->attributes->get('_controller') . '">' . $response->content . '</cache>';
-			}
+            }
         }
 
         return $next;
