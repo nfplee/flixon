@@ -122,7 +122,7 @@ class Query {
         // Get the primary key.
         $primaryKey = $db->structure->getPrimaryKey($table);
 
-		if (count($primaryKey) > 0) {
+		if (count($primaryKey) > 1) {
 			throw new Exception('Fluent PDO does not support deleting from tables with multiple primary keys.');
 		}
 
