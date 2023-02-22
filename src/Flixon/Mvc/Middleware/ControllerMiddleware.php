@@ -2,43 +2,42 @@
 
 namespace Flixon\Mvc\Middleware;
 
+use Flixon\Common\Collections\Enumerable;
 use Flixon\DependencyInjection\Container;
 use Flixon\Foundation\Middleware;
 use Flixon\Http\Request;
 use Flixon\Http\Response;
-use Flixon\Mvc\Annotations\Layout;
 use Flixon\Mvc\ControllerResolver;
+use Flixon\Mvc\Annotations\Layout;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 
 class ControllerMiddleware extends Middleware {
-    private $container;
+    private Container $container;
 
     public function __construct(Container $container) {
         $this->container = $container;
     }
 
     public function __invoke(Request $request, Response $response, callable $next = null) {
-        // Create the controller resolver.
-        $resolver = new ControllerResolver($this->container);
+        // Create the controller and argument resolver.
+        $controllerResolver = new ControllerResolver($this->container);
+        $argumentResolver = new ArgumentResolver();
 
         // Get the controller and the arguments.
-        $controller = $resolver->getController($request);
-        $arguments = $resolver->getArguments($request, $controller);
+        $controller = $controllerResolver->getController($request);
+        $arguments = $argumentResolver->getArguments($request, $controller);
 
+        // Set the response against the controller.
+        $controller[0]->response = $response;
+        
         // Set the url parameters against the node (if applicable).
         if ($request->node) {
             $request->node->urlParameters = $arguments;
         }
 
-        // Set the response against the controller.
-        $controller[0]->response = $response;
-
         // Set the layout (make sure it uses the last annotation (against the method and not the class) if multiple found).
-        if ($request->attributes->has('_annotations')) {
-            foreach ($request->attributes->get('_annotations') as $annotation) {
-                if ($annotation instanceof Layout) {
-                    $controller[0]->view->layout = $annotation->layout;
-                }
-            }
+        if ($request->attributes->has('_annotations') && ($annotation = Enumerable::from($request->attributes->get('_annotations'))->first(fn($annotation) => $annotation instanceof Layout)) != null) {
+            $controller[0]->view->layout = $annotation->layout;
         }
 
         // Call the method against the controller.

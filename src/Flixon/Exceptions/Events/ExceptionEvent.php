@@ -6,7 +6,7 @@ use Flixon\Events\Event;
 use Throwable;
 
 class ExceptionEvent extends Event {
-    public $exception;
+    public Throwable $exception;
 
     public function __construct(Throwable $exception) {
         $this->exception = $exception;

@@ -9,7 +9,9 @@ use Flixon\Security\GuestUser;
 use Flixon\Security\User;
 
 class CookieAuthenticationService implements AuthenticationService {
-	private $cookies, $request, $usersService;
+	private CookieCollection $cookies;
+	private Request $request;
+	private UsersService $usersService;
 
     public function __construct(CookieCollection $cookies, Request $request, UsersService $usersService) {
     	$this->cookies = $cookies;
@@ -41,7 +43,7 @@ class CookieAuthenticationService implements AuthenticationService {
 		return $user ?? new GuestUser();
 	}
 
-	public function login(User $user, bool $remember = false) {
+	public function login(User $user, bool $remember = false): void {
 		// Store the logged in username in the session.
 		$this->request->session->set('username', $user->username);
 		
@@ -52,7 +54,7 @@ class CookieAuthenticationService implements AuthenticationService {
 		}
 	}
 	
-	public function logout() {
+	public function logout(): void {
 		// Log the user out.
 		$this->request->session->remove('username');
 

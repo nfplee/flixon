@@ -2,7 +2,7 @@
 
 namespace Flixon\Security;
 
-class Roles {
+enum Roles: int {
 	const ADMIN = 1;
     const USER = 2;
     const GUEST = 3;

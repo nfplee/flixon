@@ -9,7 +9,7 @@ use Iterator;
 use IteratorAggregate;
 
 class Enumerable implements ArrayAccess, Countable, IteratorAggregate {
-	protected $enumerable;
+	protected array $enumerable;
 
     public function __construct(array $enumerable) {
         $this->enumerable = $enumerable;
@@ -19,7 +19,7 @@ class Enumerable implements ArrayAccess, Countable, IteratorAggregate {
         return new self($array['enumerable']);
     }
 
-    public function add(...$values): Enumerable {
+    public function add(mixed ...$values): Enumerable {
         return new static(array_merge($this->enumerable, $values));
     }
 
@@ -31,7 +31,7 @@ class Enumerable implements ArrayAccess, Countable, IteratorAggregate {
         return $this->count($callback, $flag) > 0;
     }
 
-    public function contains($item): bool {
+    public function contains(mixed $item): bool {
         return in_array($item, $this->enumerable);
     }
 
@@ -85,14 +85,14 @@ class Enumerable implements ArrayAccess, Countable, IteratorAggregate {
         return new static($enumerable);
     }
 
-    public function insert(...$values): Enumerable {
+    public function insert(mixed ...$values): Enumerable {
         $enumerable = $this->enumerable;
         array_unshift($enumerable, ...$values);
 
         return new static($enumerable);
     }
 
-    public function keys($searchValue = null): Enumerable {
+    public function keys(?string $searchValue = null): Enumerable {
         return new static($searchValue != null ? array_keys($this->enumerable, $searchValue) : array_keys($this->enumerable));
     }
 
@@ -112,23 +112,23 @@ class Enumerable implements ArrayAccess, Countable, IteratorAggregate {
         return max($this->enumerable);
     }
 
-    public function offsetGet($offset) {
+    public function offsetGet(mixed $offset): mixed {
         return $this->enumerable[$offset];
     }
 
-    public function offsetSet($offset, $value) {
+    public function offsetSet(mixed $offset, $value): void {
         $this->enumerable[] = $value;
     }
 
-    public function offsetExists($offset) {
+    public function offsetExists(mixed $offset): bool {
         return array_key_exists($offset, $this->enumerable);
     }
 
-    public function offsetUnset($offset) {
+    public function offsetUnset(mixed $offset): void {
         unset($this->enumerable[$offset]);
     }
 
-    public function random() {
+    public function random(): mixed {
         return array_rand($this->enumerable);
     }
 
@@ -136,7 +136,7 @@ class Enumerable implements ArrayAccess, Countable, IteratorAggregate {
         return new static(array_reverse($this->enumerable));
     }
 
-    public function slice(int $offset, int $length = null): Enumerable {
+    public function slice(int $offset, ?int $length = null): Enumerable {
         return new static(array_slice($this->enumerable, $offset, $length));
     }
 

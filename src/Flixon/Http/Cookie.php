@@ -2,8 +2,9 @@
 
 namespace Flixon\Http;
 
-use Symfony\Component\HttpFoundation\Cookie as BaseCookie;
+use Flixon\Common\Traits\PropertyAccessor;
+use Symfony\Component\HttpFoundation\Cookie as CookieBase;
 
-class Cookie extends BaseCookie {
-	use \Flixon\Common\Traits\PropertyAccessor;
+class Cookie extends CookieBase {
+	use PropertyAccessor;
 }

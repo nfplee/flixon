@@ -3,7 +3,8 @@
 namespace Flixon\Security;
 
 class GuestUser implements User {
-	public $id, $roleId;
+	public ?int $id;
+	public int $roleId;
 
 	public function __construct() {
         $this->id = null;

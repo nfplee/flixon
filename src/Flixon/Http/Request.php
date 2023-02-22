@@ -3,11 +3,12 @@
 namespace Flixon\Http;
 
 use Exception;
-use Symfony\Component\HttpFoundation\Request as BaseRequest;
+use Flixon\Common\Traits\PropertyAccessor;
+use Symfony\Component\HttpFoundation\Request as RequestBase;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class Request extends BaseRequest {
-    use \Flixon\Common\Traits\PropertyAccessor;
+class Request extends RequestBase {
+    use PropertyAccessor;
 
     public $catch = true, $locale = null, $node = null, $parent = null, $user = null;
 
@@ -23,25 +24,15 @@ class Request extends BaseRequest {
         return isset($this->parent);
     }
 
-    // This fixes an issue where the request uri is appending /index.php to the uri.
-    public function getRequestUri() {
-        return str_replace('/index.php', '/', $this->server->get('REQUEST_URI'));
-    }
-
     public function getRoot(): Request {
         return $this->parent ? $this->parent->root : $this;
     }
 
-    public function getSession() {
+    public function getSession(): Session {
         // Make sure the session exists.
         if (!$this->hasSession()) {
             // Create the session (use the parent session if it exists).
-            $session = $this->parent != null ? $this->parent->session : new Session();
-
-            // Start the session (if it hasn't been already).
-            //if (!$session->isStarted()) {
-            //    $session->start();
-            //}
+            $session = $this->parent?->session ?? new Session();
 
             // Set the session.
             $this->setSession($session);

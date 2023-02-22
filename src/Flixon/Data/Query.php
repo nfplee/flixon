@@ -3,9 +3,11 @@
 namespace Flixon\Data;
 
 use Doctrine\Common\Annotations\Reader as AnnotationReader;
+use Flixon\Common\Collections\Enumerable;
 use Flixon\Common\Inflector;
 use Flixon\Common\Utilities;
 use Flixon\Data\Annotations\ClassMap;
+use Flixon\Data\Queries\Select;
 use Flixon\DependencyInjection\Container;
 use ReflectionClass;
 
@@ -16,9 +18,9 @@ class Query {
 	 * @param 	string 	$class 		The entity class to select from.
 	 * @param 	mixed 	$primaryKey Optional primary key value, if multiple primary keys then specify as an array.
      *
-	 * @return SelectQuery The select query.
+	 * @return Select The select query.
 	 */
-	public static function from(string $class, $primaryKey = null): SelectQuery {
+	public static function from(string $class, mixed $primaryKey = null): Select {
 		return Container::$current->get('db')->from(self::getTable($class), $primaryKey)
 			->disableSmartJoin() // Fixes an issue when doing sub queries and it tries to join the sub query's table.
 			->asEntity($class);
@@ -31,7 +33,7 @@ class Query {
      *
 	 * @return mixed The result of the query -- it will return false if an error is thrown.
 	 */
-	public static function insert(Entity $entity) {
+	public static function insert(Entity $entity): mixed {
 		// Get the database.
 		$db = Container::$current->get('db');
 
@@ -62,7 +64,7 @@ class Query {
      *
 	 * @return mixed The result of the query -- it will return false if an error is thrown.
 	 */
-	public static function update(Entity $entity) {
+	public static function update(Entity $entity): mixed {
 		// First make sure the entity has changed.
 		if (count($entity->dirtyProperties) == 0) {
 			return true;
@@ -109,7 +111,7 @@ class Query {
      *
 	 * @return mixed The result of the query -- it will return false if an error is thrown.
 	 */
-	public static function delete(Entity $entity) {
+	public static function delete(Entity $entity): mixed {
 		// Get the database.
 		$db = Container::$current->get('db');
 
@@ -131,12 +133,11 @@ class Query {
 	 * @return string The table name.
 	 */
 	public static function getTable(string $class): string {
-		// Try to get a mapping annotation for the class.
-		$annotation = Container::$current->get(AnnotationReader::class)->getClassAnnotation(new ReflectionClass($class), ClassMap::class);
-		
-		// If the mapping exists then use that else format using convention.
-		if ($annotation !== null) {
-			return $annotation->table;
+		$reflectionClass = new ReflectionClass($class);
+
+		// If a mapping exists then use that else format using convention.
+		if (($attribute = Enumerable::from($reflectionClass->getAttributes(ClassMap::class))->first()) != null) {
+			return $attribute->newInstance()->table;
 		} else {
 			return strtolower(Utilities::splitUpperCase(Inflector::pluralize(Utilities::stripNamespaceFromClass($class)), '_'));
 		}

@@ -11,19 +11,19 @@ use Flixon\Templating\Template;
  * This class must extend Template rather that take a dependency on it. This allows you to say $this within the view/template and it will point to an instance of this class.
  */
 class View extends Template {
-	protected $body, $rootPath, $section = [];
-
-	public $layout;
+	protected string $body, $rootPath;
+    protected array $section = [];
+	public string $layout;
 
     /**
 	 * This is merged with the model when rendering the view. It also allows you to access the model in derived classes.
 	 */
-    protected $model = [];
+    protected array $model = [];
 
     /**
 	 * If you don't set the request in the constructor here then when you say $this->request it would be overridden by any child requests.
 	 */
-	protected $request;
+	protected Request $request;
 
 	public function __construct(Application $app, Config $config, Request $request) {
 		$this->rootPath = $app->rootPath;

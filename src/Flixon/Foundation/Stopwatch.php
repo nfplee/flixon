@@ -6,7 +6,7 @@ class Stopwatch {
     /**
 	 * @var $timers array
 	 */
-    private $timers = [];
+    private array $timers = [];
     
 	/**
 	 * Start the timer.
@@ -14,7 +14,7 @@ class Stopwatch {
 	 * @param $name string
 	 * @return Flixon\Foundation\Stopwatch
 	 */
-	public function start($name = 'default'): Stopwatch {
+	public function start(string $name = 'default'): Stopwatch {
         $this->timers[$name] = microtime(true);
         
         return $this;
@@ -26,7 +26,7 @@ class Stopwatch {
 	 * @param $name string
 	 * @return float The elapsed time since start() was called.
 	 */
-	public function elapsed($name = 'default'): float {
+	public function elapsed(string $name = 'default'): float {
 		return microtime(true) - $this->timers[$name];
 	}
 }

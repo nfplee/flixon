@@ -2,18 +2,15 @@
 
 namespace Flixon\Http\Annotations;
 
-/**
- * @Annotation
- */
+use Attribute;
+
+#[Attribute]
 class ResponseCache {
-    public $duration, $varyBy;
+    public int $duration;
+    public ?string $varyBy;
 
-    public function __construct(array $values) {
-        $this->duration = $values['duration'] ?? 300;
-        $this->varyBy = $values['varyBy'];
-    }
-
-    public static function __set_state(array $array): ResponseCache {
-        return new ResponseCache($array);
+    public function __construct(?string $varyBy = null, int $duration = 300) {
+        $this->varyBy = $varyBy;
+        $this->duration = $duration;
     }
 }

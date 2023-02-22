@@ -6,7 +6,9 @@ use Flixon\Config\Config;
 use Flixon\Foundation\Application;
 
 class OutputLogger implements Logger {
-	private $app, $config, $logs = [];
+	private Application $app;
+    private Config $config;
+    private array $logs = [];
 
 	public function __construct(Application $app, Config $config) {
 		$this->app = $app;

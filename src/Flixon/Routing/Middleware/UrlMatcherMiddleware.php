@@ -2,20 +2,18 @@
     
 namespace Flixon\Routing\Middleware;
 
-use Doctrine\Common\Annotations\Reader as AnnotationReader;
 use Flixon\Foundation\Middleware;
 use Flixon\Http\Request;
 use Flixon\Http\Response;
-use Flixon\Routing\RouteCollection;
 use ReflectionMethod;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RouteCollection;
 
 class UrlMatcherMiddleware extends Middleware {
-    private $annotationReader, $routes;
+    private RouteCollection $routes;
 
-    public function __construct(AnnotationReader $annotationReader, RouteCollection $routes) {
-        $this->annotationReader = $annotationReader;
+    public function __construct(RouteCollection $routes) {
         $this->routes = $routes;
     }
 
@@ -34,9 +32,9 @@ class UrlMatcherMiddleware extends Middleware {
         } else {
             // Get the class and method for the child request.
             list($class, $method) = explode('::', $request->attributes->get('_controller'));
-            
+
             // Add the annotations for the child request (shouldn't need the class annotations).
-            $request->attributes->set('_annotations', $this->annotationReader->getMethodAnnotations(new ReflectionMethod($class, $method)));
+            $request->attributes->set('_annotations', array_map(fn($attribute) => $attribute->newInstance(), (new ReflectionMethod($class, $method))->getAttributes()));
         }
 
         return $next($request, $response, $next);

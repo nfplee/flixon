@@ -13,7 +13,7 @@ trait PropertyAccessor {
         }
     }
 
-    public function __set(string $name, $value) {
+    public function __set(string $name, mixed $value) {
         if (method_exists($this, 'set' . ucfirst($name))) {
             $this->{'set' . ucfirst($name)}($value);
         } else if (!method_exists($this, 'get' . ucfirst($name))) {

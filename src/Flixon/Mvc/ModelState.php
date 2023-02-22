@@ -3,7 +3,7 @@
 namespace Flixon\Mvc;
 
 class ModelState {
-	private $errors = [];
+	private array $errors = [];
 
 	public function addError(string $key, string $message, string $prefix = ''): ModelState {
 		$this->errors[$prefix][$key] = $message;

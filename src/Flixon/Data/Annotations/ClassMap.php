@@ -2,13 +2,13 @@
 
 namespace Flixon\Data\Annotations;
 
-/**
- * @Annotation
- */
-class ClassMap {
-	public $table;
+use Attribute;
 
-	public function __construct(array $values) {
-		$this->table = $values['value'];
+#[Attribute]
+class ClassMap {
+    public string $table;
+
+    public function __construct(string $table) {
+        $this->table = $table;
     }
 }

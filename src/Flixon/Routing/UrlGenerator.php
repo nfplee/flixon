@@ -2,18 +2,13 @@
 
 namespace Flixon\Routing;
 
-use Symfony\Component\Routing\Generator\UrlGenerator as BaseUrlGenerator;
+use Flixon\Common\Traits\PropertyAccessor;
+use Symfony\Component\Routing\Generator\UrlGenerator as UrlGeneratorBase;
 
-class UrlGenerator extends BaseUrlGenerator {
-	use \Flixon\Common\Traits\PropertyAccessor;
+class UrlGenerator extends UrlGeneratorBase {
+	use PropertyAccessor;
 
-	private $defaults = [];
-
-	protected $routes;
-
-	public function __construct(RouteCollection $routes) {
-		$this->routes = $routes;
-    }
+	private array $defaults = [];
 
 	public function addDefault(string $name, string $value, callable $callback): UrlGenerator {
 		$this->defaults[] = compact('name', 'value', 'callback');
@@ -21,18 +16,15 @@ class UrlGenerator extends BaseUrlGenerator {
 		return $this;
 	}
 
-	public function generate($name, $parameters = [], $referenceType = self::ABSOLUTE_PATH): string {
+	public function generate(string $name, array $parameters = [], int $referenceType = self::ABSOLUTE_PATH): string {
 		// Merge the defaults.
 		foreach ($this->defaults as $default) {
-			if ($default['callback'](array_key_exists($default['name'], $parameters) ? $parameters[$default['name']] : null)) {
+			if ($default['callback']($parameters[$default['name']] ?? null)) {
 				$parameters[$default['name']] = $default['value'];
 			}
 		}
 
 		// Generate the url.
-		$url = parent::generate($name, $parameters, $referenceType);
-
-        // Fix for when the default parameter is blank (replace multiple forward slashes with a single one). Make sure the previous character is not a colon (otherwise http(s):// becomes http(s):/).
-        return preg_replace('/(?<!:)\/+/', '/', str_ireplace('%3A', ':', $url));
+		return parent::generate($name, $parameters, $referenceType);
 	}
 }

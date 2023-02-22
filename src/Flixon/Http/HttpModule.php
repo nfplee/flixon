@@ -8,7 +8,7 @@ use Flixon\Http\Middleware\CookiesMiddleware;
 use Flixon\Http\Middleware\ResponseCacheMiddleware;
 
 class HttpModule extends Module {
-	public function register(Application $app) {
+	public function register(Application $app): void {
 		// Add the middleware.
     	$app->middleware->add(CookiesMiddleware::class, 300);
     	$app->middleware->add(ResponseCacheMiddleware::class, 700);

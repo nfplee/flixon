@@ -14,7 +14,10 @@ use Flixon\Http\Response;
 use Flixon\Http\ResponseCacheVaryByCollection;
 
 class ResponseCacheMiddleware extends Middleware {
-    private $app, $cachingService, $config, $varyBys;
+    private Application $app;
+    private CachingService $cachingService;
+    private Config $config;
+    private ResponseCacheVaryByCollection $varyBys;
 
     public function __construct(Application $app, CachingService $cachingService, Config $config, ResponseCacheVaryByCollection $varyBys) {
         $this->app = $app;
@@ -25,18 +28,14 @@ class ResponseCacheMiddleware extends Middleware {
 
     public function __invoke(Request $request, Response $response, callable $next = null) {
         // Try to get a response cache attribute (if response caching is enabled).
-        $responseCache = $this->config->http->responseCacheEnabled && $request->attributes->has('_annotations') ? Enumerable::from($request->attributes->get('_annotations'))->filter(function($annotation) {
-            return $annotation instanceof ResponseCache;
-        })->first() : null;
-
-        if ($responseCache != null) {
+        if ($this->config->http->responseCacheEnabled && $request->attributes->has('_annotations') && ($responseCache = Enumerable::from($request->attributes->get('_annotations'))->first(fn($annotation) => $annotation instanceof ResponseCache)) != null) {
             // Get the cache key.
-            $key = 'response-cache-' . str_replace(':', '-', str_replace('\\', '-', $request->attributes->get('_controller'))) . '-' . Enumerable::from(explode(';', $responseCache->varyBy))->map(function($key) use ($request) {
+            $key = 'response-cache-' . str_replace(':', '-', str_replace('\\', '-', $request->attributes->get('_controller'))) . ($responseCache->varyBy != null ? '-' . Enumerable::from(explode(';', $responseCache->varyBy))->map(function($key) use ($request) {
                 switch ($key) {
                     case 'locale':
                         return 'locale=' . $request->locale->id;
                     case 'role':
-                        return 'role=' . $request->root->user->roleId;
+                        return 'role=' . $request->user->roleId;
                     case 'url':
                         // Get the allowed query string.
                         $query = Enumerable::from($request->root->query->keys())->filter(function($key) {
@@ -47,7 +46,7 @@ class ResponseCacheMiddleware extends Middleware {
 
                         return 'url=' . md5($request->root->pathInfo . '?' . $query);
                     case 'user':
-                        return 'user=' . $request->root->user->id;
+                        return 'user=' . $request->user->id;
                     default:
                         // Make sure a custom vary by exists.
                         if (!isset($this->varyBys[$key])) {
@@ -56,14 +55,14 @@ class ResponseCacheMiddleware extends Middleware {
                         
                         return $key . '=' . $this->varyBys[$key]($request);
                 }
-            })->toString('_');
+            })->toString('_') : '');
 
             // Set the cache key against the request.
             $request->attributes->set('_cache', $key);
 
             // Return the cached response (if applicable).
             if (($response->content = $this->cachingService->get($key, $responseCache->duration)) != null) {
-                // If it's the root cached request then replace the cache wrapper else add the wrapper so that the parent cache includes the placeholder.
+                // If it's the root cached request then replace the cache wrapper.
                 if (!$request->isChildRequest() || !$request->parent->attributes->has('_cache')) {
                     // Look for all the cached child requests within the response content.
                     preg_match_all('/<cache controller="(.*?)">.*?<\/cache>/s', $response->content, $matches);
@@ -82,8 +81,6 @@ class ResponseCacheMiddleware extends Middleware {
                         // Replace the content.
                         $response->content = str_replace($matches[0][$i], $childResponse->content, $response->content);
                     }
-                } else {
-                    $response->content = '<cache controller="' . $request->attributes->get('_controller') . '">' . $response->content . '</cache>';
                 }
 
                 return $response;

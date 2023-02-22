@@ -10,7 +10,8 @@ use Flixon\Localization\Services\LanguageService;
 use Flixon\Scheduling\TaskRunner;
 
 class TaskRunnerMiddleware extends Middleware {
-    private $container, $lang;
+    private Container $container;
+    private LanguageService $lang;
 
     public function __construct(Container $container, LanguageService $lang) {
         $this->container = $container;
@@ -27,7 +28,7 @@ class TaskRunnerMiddleware extends Middleware {
             $request->attributes->remove('_cache');
 
             // Set the response.
-            $response->content = $this->lang->get('Task runner successfully run!');
+            $response->content = $this->lang->get('Task runner successfully run.');
 
             return $response;
         }

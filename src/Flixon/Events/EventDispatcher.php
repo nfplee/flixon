@@ -2,14 +2,15 @@
 
 namespace Flixon\Events;
 
-use Symfony\Component\EventDispatcher\EventDispatcher as BaseEventDispatcher;
+use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcher as EventDispatcherBase;
 
-class EventDispatcher extends BaseEventDispatcher {
-    public function on(string $event, $callback) {
-        $this->addListener($event, $callback);
+class EventDispatcher extends EventDispatcherBase {
+    public function on(string $eventName, callable $callback, int $priority = 0): void {
+        $this->addListener($eventName, $callback, $priority);
     }
 
-    public function trigger(string $name, $event) {
-        $this->dispatch($name, $event);
+    public function trigger(string $eventName, Event $event): object {
+        return $this->dispatch($event, $eventName);
     }
 }

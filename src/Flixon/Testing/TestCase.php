@@ -3,21 +3,22 @@
 namespace Flixon\Testing;
 
 use Flixon\Foundation\Application;
+use Flixon\Foundation\Environment;
 use Flixon\Http\Request;
 use Flixon\Security\User;
 use Flixon\Security\Services\UsersService;
-use PHPUnit\Framework\TestCase as BaseTestCase;
+use PHPUnit\Framework\TestCase as TestCaseBase;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
-abstract class TestCase extends BaseTestCase {
+abstract class TestCase extends TestCaseBase {
     use \Flixon\Foundation\Traits\Application;
 
-    protected $rootPath = __DIR__ . '/../../..';
+    protected string $rootPath = __DIR__ . '/../../..';
 
     public function createApplication(): Application {
         // Create the application.
-        $app = new Application($this->rootPath, Application::TESTING);
+        $app = new Application($this->rootPath, Environment::TESTING);
 
         // Add the modules.
         $app->modules
@@ -38,7 +39,7 @@ abstract class TestCase extends BaseTestCase {
         return $app;
     }
 
-    public function createRequest($uri, $method = 'GET', $parameters = [], $cookies = [], $files = [], $server = [], $content = null): Request {
+    public function createRequest(string $uri, string $method = 'GET', array $parameters = [], array $cookies = [], array $files = [], array $server = [], ?string $content = null): Request {
         // Create the request.
         $request = Request::create($uri, $method, $parameters, $cookies, $files, $server, $content);
 
@@ -48,7 +49,7 @@ abstract class TestCase extends BaseTestCase {
         return $request;
     }
     
-    public function setUp() {
+    public function setUp(): void {
         // Override the memory limit (this prevents the fatal error "Allowed memory size of 134217728 bytes exhausted" from throwing).
         ini_set('memory_limit', '-1');
 

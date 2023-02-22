@@ -3,7 +3,8 @@
 namespace Flixon\Common\Collections;
 
 class PagedEnumerable extends Enumerable {
-	public $page, $pageSize, $totalCount, $totalPages, $hasPreviousPage, $hasNextPage;
+	public int $page, $pageSize, $totalCount, $totalPages;
+	public bool $hasPreviousPage, $hasNextPage;
 
 	public function getUrl(string $url, int $page): string {
         // Make sure the page placeholder has not been encoded.
@@ -16,7 +17,7 @@ class PagedEnumerable extends Enumerable {
     	}
     }
 
-	public function page(int $page, int $pageSize, int $totalCount = null): PagedEnumerable {
+	public function page(int $page, int $pageSize, ?int $totalCount = null): PagedEnumerable {
 		if ($totalCount === null) {
 			$totalCount = $this->count();
 			$enumerable = $this->skip(($page - 1) * $pageSize)->take($pageSize);

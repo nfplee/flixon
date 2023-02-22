@@ -7,7 +7,7 @@ use Iterator;
 use IteratorAggregate;
 
 class CookieCollection implements IteratorAggregate {
-	private $cookies = [];
+	private array $cookies = [];
 
 	public function add(Cookie $cookie): CookieCollection {
 		$this->cookies[] = $cookie;

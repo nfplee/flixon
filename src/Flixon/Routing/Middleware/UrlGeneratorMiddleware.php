@@ -9,7 +9,7 @@ use Flixon\Routing\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 
 class UrlGeneratorMiddleware extends Middleware {
-    private $url;
+    private UrlGenerator $url;
 
 	public function __construct(UrlGenerator $url) {
         $this->url = $url;

@@ -2,15 +2,21 @@
 
 namespace Flixon\Routing;
 
-use Doctrine\Common\Annotations\Reader as AnnotationReader;
 use Flixon\Foundation\Application;
+use Flixon\Foundation\Environment;
 use Flixon\Foundation\Module;
 use Flixon\Routing\Middleware\UrlGeneratorMiddleware;
 use Flixon\Routing\Middleware\UrlMatcherMiddleware;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Loader\DelegatingLoader;
+use Symfony\Component\Config\Loader\LoaderResolver;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Loader\AnnotationClassLoader;
+use Symfony\Component\Routing\Loader\Psr4DirectoryLoader;
+use Symfony\Component\Routing\RouteCollection;
 
 class RoutingModule extends Module {
-    public function register(Application $app) {
+    public function register(Application $app): void {
     	// Add the middleware.
     	$app->middleware->add(UrlGeneratorMiddleware::class, 900);
     	$app->middleware->add(UrlMatcherMiddleware::class, 1100);
@@ -20,16 +26,21 @@ class RoutingModule extends Module {
             // Create the route collection.
             $routes = new RouteCollection();
 
-            // Initialize the annotation loader.
-            $loader = new AnnotationDirectoryLoader(new FileLocator(), new AnnotatedRouteControllerLoader($app->container->get(AnnotationReader::class)));
-
-            // Add the routes.
-            if (file_exists($app->rootPath . '/app/Controllers')) {
-                $routes->addCollection($loader->load($app->rootPath . '/app/Controllers')); // Note: Remove /Controllers to make this more modular.
+            if (file_exists(__DIR__ . '/../../App/Controllers')) {
+                $loader = new DelegatingLoader(
+                    new LoaderResolver([
+                        new Psr4DirectoryLoader(
+                            new FileLocator()
+                        ),
+                        new AnnotatedRouteControllerLoader()
+                    ])
+                );
+            
+                $routes->addCollection($loader->load(['path' => __DIR__ . '/../../App/Controllers', 'namespace' => 'App\Controllers'], 'attribute'));
             }
 
             return $routes;
-        }, $app->environment == Application::PRODUCTION ? 60 * 60 : 60, false);
+        }, $app->environment == Environment::PRODUCTION ? 60 * 60 : 60);
 
         // Register the routes and add an alias.
 		$app->container->add(RouteCollection::class, $routes)->map('routes', RouteCollection::class);

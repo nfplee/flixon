@@ -5,7 +5,7 @@ namespace Flixon\Common\Services;
 use Flixon\Foundation\Application;
 
 class FileCachingService implements CachingService {
-	private $path;
+	private string $path;
 
     public function __construct(Application $app) {
 		$this->path = $app->rootPath . '/resources/cache/';
@@ -15,10 +15,10 @@ class FileCachingService implements CachingService {
 	 * Get item from cache.
 	 * 
 	 * @param  string  $key   		item to look for in the cache.
-	 * @param  string  $duration  	the cache duration.
-	 * @return string             	returns the cache.
+	 * @param  int	   $duration  	the cache duration.
+	 * @return mixed             	returns the cache.
 	 */
-	public function get(string $key, int $duration = 300) {
+	public function get(string $key, int $duration = 300): mixed {
 		$filename = $this->path . '/' . $key;
 
 		if ($duration > 0 && is_readable($filename) && filemtime($filename) >= time() - $duration) {
@@ -33,11 +33,11 @@ class FileCachingService implements CachingService {
 	 * 
 	 * @param  string  	$key       	item to look for in the cache.
 	 * @param  callable $callback  	the callback function.
-	 * @param  string 	$duration  	the cache duration.
-	 * @param  string 	$serialize 	serializing the data is slower but if you don't then the cached data must implement __set_state.
-	 * @return string            	returns the cache.
+	 * @param  int	 	$duration  	the cache duration.
+	 * @param  bool 	$serialize 	serializing the data is slower but if you don't then the cached data must implement __set_state.
+	 * @return mixed            	returns the cache.
 	 */
-	public function getOrAdd(string $key, callable $callback, int $duration = 300, bool $serialize = true) {
+	public function getOrAdd(string $key, callable $callback, int $duration = 300, bool $serialize = true): mixed {
 		$value = $this->get($key, $duration);
 
 		if ($value === null) {
@@ -57,7 +57,7 @@ class FileCachingService implements CachingService {
 	 * @param  string  $prefix      prefix to look for in the cache.
 	 * @param  int  $duration 		the cache duration to keep.
 	 */
-	public function remove(string $prefix, ?int $duration = null) {
+	public function remove(string $prefix, ?int $duration = null): void {
 		foreach (scandir($this->path) as $file) {
 			$filename = $this->path . '/' . $file;
 
@@ -74,7 +74,7 @@ class FileCachingService implements CachingService {
 	 * @param string $value 	the data to save.
 	 * @param string $serialize serializing the data is slower but if you don't then the cached data must implement __set_state.
 	 */
-	public function set(string $key, $value, bool $serialize = true) {
+	public function set(string $key, mixed $value, bool $serialize = true): void {
 		$filename = $this->path . '/' . $key;
 		$tempFilename = $filename . uniqid('', true) . '.tmp';
 
@@ -92,7 +92,7 @@ class FileCachingService implements CachingService {
 	/**
 	 * Does a standard variable export but removes white spaces.
 	 */
-	private function export($expression, $return = false): string {
+	private function export(mixed $expression, bool $return = false): string {
 		// Export the variables.
 		$export = var_export($expression, $return);
 

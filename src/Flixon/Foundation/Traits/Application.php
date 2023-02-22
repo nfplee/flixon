@@ -5,9 +5,7 @@ namespace Flixon\Foundation\Traits;
 use Flixon\DependencyInjection\Annotations\Inject;
 
 trait Application {
-	/**
-     * @Inject(Flixon\Foundation\Application::class)
-     */
+	#[Inject(\Flixon\Foundation\Application::class)]
 	protected $app;
 
 	public function __get(string $name) {

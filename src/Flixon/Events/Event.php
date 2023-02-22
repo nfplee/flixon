@@ -2,6 +2,6 @@
 
 namespace Flixon\Events;
 
-use Symfony\Component\EventDispatcher\Event as BaseEvent;
+use Symfony\Contracts\EventDispatcher\Event as EventBase;
 
-abstract class Event extends BaseEvent { }
+abstract class Event extends EventBase { }

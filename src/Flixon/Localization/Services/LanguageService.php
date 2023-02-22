@@ -8,14 +8,8 @@ use Flixon\Http\Request;
 class LanguageService {
 	use \Flixon\Foundation\Traits\Application;
 
-    /**
-     * Variable holds array with language.
-     *
-     * @var array
-     */
-    private $data;
-    
-    private $path;
+    private array $data = [];
+    private string $path;
 
     public function __construct(Application $app) {
 		$this->path = $app->rootPath . '/resources/lang/';
@@ -27,7 +21,7 @@ class LanguageService {
      * @param string $locale
      * @param string $name
      */
-    public function load(string $locale) {
+    public function load(string $locale): void {
         $file = $this->path . $locale . '.php';
 
         if (is_readable($file)) {

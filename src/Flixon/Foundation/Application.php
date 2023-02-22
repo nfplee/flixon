@@ -9,65 +9,47 @@ use Flixon\Http\Request;
 use Flixon\Http\Response;
 
 class Application {
-    const PRODUCTION = 'production';
-    const TESTING = 'testing';
-    const DEVELOPMENT = 'development';
-
     /**
      * The dependency injection container.
-     *
-     * @var \Flixon\DependencyInjection\Container
      */
-    public $container;
+    public Container $container;
 
     /**
      * The application environment.
-     *
-     * @var const
      */
-    public $environment;
+    public string $environment;
 
     /**
      * The http middleware.
-     *
-     * @var \Flixon\Foundation\MiddlewareCollection
      */
-    public $middleware;
+    public MiddlewareCollection $middleware;
 
     /**
      * The application modules.
-     *
-     * @var \Flixon\Foundation\ModuleCollection
      */
-    public $modules;
+    public ModuleCollection $modules;
 
     /**
      * The root path.
-     *
-     * @var const
      */
-    public $rootPath;
+    public string $rootPath;
 
     /**
      * The application stopwatch.
-     *
-     * @var \Flixon\Foundation\Stopwatch
      */
-    public $stopwatch;
+    public Stopwatch $stopwatch;
 
     /**
      * Whether the application's modules have been registered.
-     *
-     * @var bool
      */
-    protected $registered = false;
+    protected bool $registered = false;
 
-    public function __construct(string $rootPath = __DIR__ . '/../../..', string $environment = Application::PRODUCTION) {
+    public function __construct(string $rootPath = __DIR__ . '/../../..', string $environment = Environment::PRODUCTION) {
         // Create and start the stopwatch.
         $this->stopwatch = (new Stopwatch())->start();
 
         // Create the container.
-        $this->container = new Container($environment, $rootPath);
+        $this->container = new Container();
 
         // Add the current instance (including an alias) and the container itself to the container.
         $this->container
@@ -85,7 +67,7 @@ class Application {
         $this->modules = new ModuleCollection();
     }
 
-    public function handle(Request $request, Request $parent = null, $catch = true): Response {
+    public function handle(Request $request, Request $parent = null, bool $catch = true): Response {
         // Set the parent and whether we catch exceptions against the request.
         $request->parent = $parent;
         $request->catch = $catch;
@@ -124,6 +106,8 @@ class Application {
         if (!$this->registered) {
             $this->register();
         }
+
+        print_r($this->middleware);exit;
 
         // Handle the request.
         $response = $this->handle($request);

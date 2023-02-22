@@ -3,29 +3,22 @@
 namespace Flixon\Mvc;
 
 use Flixon\DependencyInjection\Annotations\Inject;
-use Flixon\Filesystem\CsvHelpers;
+use Flixon\Foundation\Traits\Application;
 use Flixon\Http\Response;
-use GUMP as Gump;
+use Flixon\Mvc\View;
 
 abstract class Controller {
-	use \Flixon\Foundation\Traits\Application;
+	use Application;
 
-    /**
-     * @Inject(Flixon\Mvc\ModelState::class)
-     */
-    protected $modelState;
+    #[Inject(ModelState::class)]
+    protected ModelState $modelState;
 
-    /**
-     * @var \Flixon\Http\Response
-     */
-    public $response;
+    public Response $response;
 
-	/**
-     * @Inject(Flixon\Mvc\View::class)
-     */
-    public $view;
+	#[Inject(View::class)]
+    public View $view;
 
-	public function alert(string $type, string $title, string $message, string $url = null): Response {
+	public function alert(string $type, string $title, string $message, ?string $url = null): Response {
 		return $this->render('shared/alert', [
 			'type'		=> $type,
 			'title'		=> $title,
@@ -59,7 +52,7 @@ abstract class Controller {
         return $this->response;
     }
 
-    public function json($data): Response {
+    public function json(mixed $data): Response {
         // Set the json header and content.
         $this->response->headers->set('Content-Type', 'application/json');
 

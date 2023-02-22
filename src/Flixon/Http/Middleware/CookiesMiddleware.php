@@ -10,7 +10,8 @@ use Flixon\Http\Request;
 use Flixon\Http\Response;
 
 class CookiesMiddleware extends Middleware {
-    private $config, $cookies;
+    private Config $config;
+    private CookieCollection $cookies;
 
     public function __construct(Config $config, CookieCollection $cookies) {
         $this->config = $config;

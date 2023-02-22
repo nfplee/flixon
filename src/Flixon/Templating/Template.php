@@ -2,12 +2,14 @@
 
 namespace Flixon\Templating;
 
+use Flixon\Foundation\Traits\Application;
+
 class Template {
-	use \Flixon\Foundation\Traits\Application;
+	use Application;
 
-	private $vars = [];
+	private array $vars = [];
 
-	public function add(string $name, $value): Template {
+	public function add(string $name, mixed $value): Template {
 		$this->vars[$name] = $value;
 
 		return $this;

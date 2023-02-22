@@ -4,13 +4,9 @@ namespace Flixon\DependencyInjection;
 
 use ArrayAccess;
 use Closure;
-use Doctrine\Common\Annotations\Reader;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\FileCacheReader;
 use Exception;
 use Flixon\Common\Collections\Enumerable;
 use Flixon\DependencyInjection\Annotations\Inject;
-use Flixon\Foundation\Application;
 use ReflectionClass;
 
 class Container implements ArrayAccess {
@@ -19,22 +15,19 @@ class Container implements ArrayAccess {
      *
      * @var static
      */
-    public static $current;
+    public static Container $current;
 
-    protected $annotationReader, $instances = [], $map = [];
+    protected array $instances = [], $map = [];
 
-    public function __construct(string $environment, string $path = __DIR__ . '/../../..') {
+    public function __construct() {
         // Store the current instance in a static variable so we can call this class statically.
         static::$current = $this;
-
-        // Add container dependencies.
-        $this->annotationReader = $this->add(Reader::class, new FileCacheReader(new AnnotationReader(), $path . '/resources/cache', $debug = $environment != Application::PRODUCTION))->get(Reader::class);
     }
 
     /**
      * Add a shared instance or a closure. Closures allow you to lazy load an instance aswell as not make it a singleton.
      */
-    public function add(string $class, $instance): Container {
+    public function add(string $class, mixed $instance): Container {
         $this->instances[$class] = $instance;
 
         return $this;
@@ -43,7 +36,7 @@ class Container implements ArrayAccess {
     /**
      * Get an instance of a class.
      */
-    public function get(string $name) {
+    public function get(string $name): mixed {
         // Try to get a mapping.
         $map = array_key_exists($name, $this->map) ? $this->map[$name] : null;
 
@@ -79,7 +72,7 @@ class Container implements ArrayAccess {
             foreach ($constructor->getParameters() as $parameter) {
                 // Only set if there is not a default value.
                 if (!$parameter->isDefaultValueAvailable()) {
-                    $arguments[$parameter->name] = $this->get($parameter->getClass()->name);
+                    $arguments[$parameter->name] = $this->get($parameter->getType()->getName());
                 }
             }
         }
@@ -89,12 +82,9 @@ class Container implements ArrayAccess {
 
         // Inject the properties.
         foreach ($reflectionClass->getProperties() as $property) {
-            // Try to get an inject annotation.
-            $annotation = $this->annotationReader->getPropertyAnnotation($property, Inject::class);
-
-            if ($annotation !== null) {
+            if (($attribute = Enumerable::from($property->getAttributes(Inject::class))->first()) != null) {
                 $property->setAccessible(true);
-                $property->setValue($instance, $this->get($annotation->class));
+                $property->setValue($instance, $this->get($attribute->newInstance()->class));
             }
         }
 
@@ -139,19 +129,19 @@ class Container implements ArrayAccess {
         return $this;
     }
 
-    public function offsetGet($offset) {
+    public function offsetGet(mixed $offset): mixed {
         return $this->get($offset);
     }
 
-    public function offsetSet($offset, $value) {
+    public function offsetSet(mixed $offset, mixed $value): void {
         $this->add($offset, $value);
     }
 
-    public function offsetExists($offset) {
+    public function offsetExists(mixed $offset): bool {
         return $this->has($offset);
     }
 
-    public function offsetUnset($offset) {
+    public function offsetUnset(mixed $offset): void {
         unset($this->instances[$offset]);
     }
 }

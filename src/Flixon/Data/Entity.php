@@ -8,9 +8,10 @@ use Flixon\Common\Collections\Enumerable;
 use Flixon\Common\Utilities;
 use Flixon\DependencyInjection\Container;
 
+#[\AllowDynamicProperties]
 abstract class Entity {
-	private $lazy = [], $dirtyProperties = [];
-	protected $properties = [];
+	private array $lazy = [], $dirtyProperties = [];
+	protected array $properties = [];
 
 	public function __get(string $name) {
 		if (method_exists($this, 'get' . ucfirst($name))) {
@@ -22,7 +23,7 @@ abstract class Entity {
 		}
 	}
 
-	public function __set(string $name, $value) {
+	public function __set(string $name, mixed $value) {
 		if (method_exists($this, 'set' . ucfirst($name))) {
 			$this->{'set' . ucfirst($name)}($value);
         } else if (!method_exists($this, 'get' . ucfirst($name))) {
@@ -46,7 +47,7 @@ abstract class Entity {
 		return method_exists($this, 'get' . ucfirst($name)) || array_key_exists($name, $this->properties);
 	}
 
-	public function __unset($name) {
+	public function __unset(string $name) {
         unset($this->properties[$name]);
     }
 
@@ -62,7 +63,7 @@ abstract class Entity {
 		return array_map(function($name) { return $this->$name; }, $properties);
 	}
 
-	protected function hasOne(string $class, string $foreignKey = null) {
+	protected function hasOne(string $class, ?string $foreignKey = null) {
 		// Get the calling property.
 		$property = $this->getCallingProperty();
 
@@ -87,7 +88,7 @@ abstract class Entity {
 		}, $property);
 	}
 
-	protected function hasMany(string $class, string $foreignKey = null, string $primaryKey = null): Enumerable {
+	protected function hasMany(string $class, ?string $foreignKey = null, ?string $primaryKey = null): Enumerable {
 		// Get the calling property.
 		$property = $this->getCallingProperty();
 
@@ -125,7 +126,7 @@ abstract class Entity {
         return $this;
 	}
 
-	protected function lazy(Closure $callback, string $key = null) {
+	protected function lazy(Closure $callback, ?string $key = null): mixed {
 		// If no key is set then use the property name.
 		if ($key === null) {
 			$key = $this->getCallingProperty();
@@ -142,7 +143,7 @@ abstract class Entity {
 	/**
      * Refresh a lazy loaded object.
      */
-	public function refresh(string $key = null, $value = null): Entity {
+	public function refresh(?string $key = null, mixed $value = null): Entity {
 		// If a key is provided then just update/remove that else refresh the whole entity.
 		if ($key !== null) {
 			if ($value !== null) {

@@ -12,14 +12,13 @@ use Flixon\Http\Response;
 use Throwable;
 
 class ExceptionMiddleware extends Middleware {
-	private $app, $event;
+	private Application $app;
+    private EventDispatcher $event;
 
 	/**
      * The error handlers.
-     *
-     * @var array
      */
-    public $errorHandlers = [];
+    public array $errorHandlers = [];
 
 	public function __construct(Application $app, EventDispatcher $event) {
 		$this->app = $app;

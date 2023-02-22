@@ -7,7 +7,7 @@ use Iterator;
 use IteratorAggregate;
 
 class ModuleCollection implements IteratorAggregate {
-	private $modules = [];
+	private array $modules = [];
 
 	public function add(string $class): ModuleCollection {
 		$this->modules[] = new $class();

@@ -2,12 +2,10 @@
 
 namespace Flixon\Testing\Traits;
 
-use Flixon\DependencyInjection\Container;
-
 trait Database {
-    protected $queries;
+    protected array $queries;
 
-    public function setUp() {
+    public function setUp(): void {
         // Call the parent.
         parent::setUp();
 
@@ -17,7 +15,7 @@ trait Database {
         };
     }
 
-	public function tearDown() {
+	public function tearDown(): void {
         // Call the parent.
         parent::tearDown();
 

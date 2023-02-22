@@ -8,7 +8,7 @@ use Flixon\Foundation\Application;
 use Flixon\Foundation\Module;
 
 class CommonModule extends Module {
-    public function register(Application $app) {
+    public function register(Application $app): void {
 		// Register the cache service.
         $app->container->mapSingleton(CachingService::class, FileCachingService::class)->map('cache', CachingService::class);
     }

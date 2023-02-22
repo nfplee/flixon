@@ -10,7 +10,7 @@ use Flixon\Localization\Middleware\LocalizedUrlsMiddleware;
 use Flixon\Localization\Services\LanguageService;
 
 class LocalizationModule extends Module {
-	public function register(Application $app) {
+    public function register(Application $app): void {
 		// Add the middleware.
     	$app->middleware->add(LanguageLoaderMiddleware::class, 400);
     	$app->middleware->add(LocalizationMiddleware::class, 1000);
@@ -20,11 +20,23 @@ class LocalizationModule extends Module {
         $app->container->mapSingleton(LanguageService::class)->map('lang', LanguageService::class);
     }
 
-    public function registered(Application $app) {
-    	// Get the config.
+	public function registered(Application $app): void {
+    	// Get the config and routes.
     	$config = $app->container->get('config');
+		$routes = $app->container->get('routes');
 
-    	// Add the locale prefix to the routes.
-    	$app->container->get('routes')->addPrefix('/{_locale}', ['_locale' => ''], ['_locale' => $config->localization->locales . (!empty($config->localization->defaultLocale) ? '|' : '')]);
+		// Add the locale prefix to the routes.
+    	foreach ($routes->all() as $name => $route) {
+            $routes->remove($name);
+        
+            foreach ($config->localization->locales as $locale => $localePrefix) {
+                $localizedRoute = clone $route;
+                $localizedRoute->setDefault('_locale', $locale);
+                $localizedRoute->setRequirement('_locale', preg_quote($locale));
+                $localizedRoute->setDefault('_canonical_route', $name);
+                $localizedRoute->setPath($localePrefix . ($route->getPath() === '/' ? '' : $route->getPath()));
+                $routes->add($name . ($localePrefix != '' ? '.' . $locale : ''), $localizedRoute);
+            }
+        }
     }
 }

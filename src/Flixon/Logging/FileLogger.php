@@ -7,7 +7,9 @@ use Flixon\Config\Config;
 use Flixon\Foundation\Application;
 
 class FileLogger implements Logger {
-    private $app, $config, $logs = [];
+    private Application $app;
+    private Config $config;
+    private array $logs = [];
 
     public function __construct(Application $app, Config $config) {
         $this->app = $app;
@@ -42,7 +44,7 @@ class FileLogger implements Logger {
             
             // Write the log file.
             file_put_contents($this->app->rootPath . '/resources/logs/' . $name, Enumerable::from($this->logs)->map(function($log) {
-                return $log->message . ' - ' . $log->time . ' - ' . $log->elapsed . ($log->elapsed > 0.01 ? ' WARNING' : '');
+                return $log->message . ' - ' . $log->time . ' - ' . $log->elapsed;
             })->toString(PHP_EOL));
         }
 

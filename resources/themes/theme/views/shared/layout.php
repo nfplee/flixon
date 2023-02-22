@@ -1,0 +1,1 @@
+Theme | <?php echo $this->body; ?>

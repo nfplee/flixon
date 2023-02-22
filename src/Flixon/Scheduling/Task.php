@@ -3,5 +3,5 @@
 namespace Flixon\Scheduling;
 
 abstract class Task {
-	abstract public function run();
+	abstract public function run(): void;
 }

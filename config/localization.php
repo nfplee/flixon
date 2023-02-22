@@ -1,6 +1,9 @@
 <?php
 
 return [
-	'locales'		=> '', // Don't include the default (if applicable).
-	'defaultLocale' => 'gb' // Leave blank for none.
+	'locales' => [
+        'de' => '/de',
+        'en' => '' // Make sure the default locale is last, this makes sure "/de" will have the correct locale.
+    ],
+    'defaultLocale' => 'en'
 ];

@@ -10,7 +10,8 @@ use Flixon\Foundation\MiddlewareCollection;
  * Reference: https://github.com/phapi/pipeline/blob/master/src/Phapi/Middleware/Pipeline.php
  */
 class Pipeline {
-    private $container, $logger, $queue;
+    private Container $container;
+    private PriorityQueue $queue;
 
     public function __construct(Container $container) {
         $this->container = $container;

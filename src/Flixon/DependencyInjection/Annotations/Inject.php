@@ -2,13 +2,13 @@
 
 namespace Flixon\DependencyInjection\Annotations;
 
-/**
- * @Annotation
- */
-class Inject {
-	public $class;
+use Attribute;
 
-	public function __construct(array $values) {
-		$this->class = $values['value'];
+#[Attribute]
+class Inject {
+    public string $class;
+
+    public function __construct(string $class) {
+        $this->class = $class;
     }
 }

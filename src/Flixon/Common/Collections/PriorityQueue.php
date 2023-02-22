@@ -10,7 +10,7 @@ use SplPriorityQueue;
 class PriorityQueue extends SplPriorityQueue {
     private $priority = PHP_INT_MAX;
     
-    public function insert($value, $priority) {
-        parent::insert($value, [(int)$priority, $this->priority--]);
+    public function insert(mixed $value, mixed $priority): bool {
+        return parent::insert($value, [(int)$priority, $this->priority--]);
     }
 }

@@ -4,30 +4,6 @@ namespace Flixon\Common;
 
 class Utilities {
 	/**
-	 * Checks whether a string contains another string.
-	 *
-	 * @param 	string 	$haystack	The string to look at.
-	 * @param 	string 	$needle 	The string to look for.
-     *
-	 * @return bool Whether the string was found.
-	 */
-    public static function contains(string $haystack, string $needle): bool {
-        return strpos($haystack, $needle) !== false;
-    }
-
-    /**
-	 * Checks whether a string ends with a particular string.
-	 *
-	 * @param 	string 	$haystack	The string to look at.
-	 * @param 	string 	$needle 	The string to look for.
-     *
-	 * @return bool Whether the string ends with the string to look for.
-	 */
-    public static function endsWith(string $haystack, string $needle): bool {
-        return $needle === '' || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
-    }
-
-    /**
 	 * Formats a string to a particular length.
 	 *
 	 * @param 	string 	$haystack	The string to format.
@@ -89,18 +65,6 @@ class Utilities {
     }
 
     /**
-	 * Checks whether a string starts with a particular string.
-	 *
-	 * @param 	string 	$haystack	The string to look at.
-	 * @param 	string 	$needle 	The string to look for.
-     *
-	 * @return bool Whether the string starts with the string to look for.
-	 */
-    public static function startsWith(string $haystack, string $needle): bool {
-        return $needle === '' || strrpos($haystack, $needle, -strlen($haystack)) !== false;
-    }
-
-	/**
 	 * Strips the namespace from a class.
 	 *
 	 * @param string $class	The class to strip the namespace from.
@@ -120,7 +84,7 @@ class Utilities {
      *
 	 * @return bool Whether the pattern is matched.
 	 */
-    public static function wildCardMatch(string $pattern, $search, string $separator = ','): bool {
+    public static function wildCardMatch(string $pattern, string $search, string $separator = ','): bool {
         // If the pattern is empty then return true.
         if (empty($pattern)) {
             return true;

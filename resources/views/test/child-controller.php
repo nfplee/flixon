@@ -1,0 +1,1 @@
+<?php echo $this->controller('App\\Controllers\\WidgetsController::canonical'); ?>

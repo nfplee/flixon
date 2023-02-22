@@ -3,16 +3,14 @@
 namespace Flixon\Config;
 
 use DirectoryIterator;
-use Flixon\Foundation\Application;
 use stdClass;
 
+#[\AllowDynamicProperties]
 class Config {
     /**
      * The current globally available config.
-     *
-     * @var static
      */
-    public static $current;
+    public static Config $current;
     
     public function __construct(array $data = []) {
         // Store the current instance in a static variable so we can call this class statically.
@@ -27,7 +25,7 @@ class Config {
         return new Config($array);
     }
 
-	public function load(string $path) {
+	public function load(string $path): void {
 		// Get the config files.
         $files = new DirectoryIterator($path);
         

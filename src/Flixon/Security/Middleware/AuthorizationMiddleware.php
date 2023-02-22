@@ -21,18 +21,17 @@ class AuthorizationMiddleware extends Middleware {
     	// Make sure the user is allowed to view the page (if applicable).
         if ($request->attributes->has('_annotations')) {
             // Work out whether the user is allowed to view the page.
-            $isAllowed = count(array_filter($request->attributes->get('_annotations'), function($annotation) use ($request) {
+            $isAllowed = !Enumerable::from($request->attributes->get('_annotations'))->any(function($annotation) use ($request) {
                 if ($annotation instanceof Authorize) {
-                    // Get the matching roles.
-                    $roles = Enumerable::from($annotation->roles)->filter(function($role) use ($request) {
+                    $isAllowed = Enumerable::from($annotation->roles)->any(function($role) use ($request) {
                         return $this->authorizationService->isAllowed($request->user, $role);
                     });
 
-                    return (count($roles) > 0 && $annotation->negate) || (count($roles) == 0 && !$annotation->negate);
+                    return ($isAllowed && $annotation->negate) || (!$isAllowed && !$annotation->negate);
                 } else {
                     return false;
                 }
-            })) == 0;
+            });
 
             // If not allowed then throw an access denied exception.
             if (!$isAllowed) {

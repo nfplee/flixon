@@ -2,14 +2,15 @@
 
 namespace Flixon\Http;
 
-use Symfony\Component\HttpFoundation\Response as BaseResponse;
+use Flixon\Common\Traits\PropertyAccessor;
+use Symfony\Component\HttpFoundation\Response as ResponseBase;
 
-class Response extends BaseResponse {
-	use \Flixon\Common\Traits\PropertyAccessor;
+class Response extends ResponseBase {
+	use PropertyAccessor;
 
     public $callback;
 
-    public function sendContent() {
+    public function sendContent(): static {
         parent::sendContent();
 
         // Call the callback (if applicable).

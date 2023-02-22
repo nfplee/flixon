@@ -11,7 +11,7 @@ use Flixon\Security\Services\AuthorizationService;
 use Flixon\Security\Services\CookieAuthenticationService;
 
 class SecurityModule extends Module {
-    public function register(Application $app) {
+    public function register(Application $app): void {
     	// Add the middleware.
     	$app->middleware->add(AuthenticationMiddleware::class, 1200);
     	$app->middleware->add(AuthorizationMiddleware::class, 800);

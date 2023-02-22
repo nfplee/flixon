@@ -1,0 +1,1 @@
+<?php echo $this->lang->get('Foo'); ?> | <?php echo $this->lang->get('Bar'); ?>

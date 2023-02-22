@@ -8,7 +8,7 @@ use Flixon\Http\Response;
 use Flixon\SiteMap\Services\SiteMapService;
 
 class SiteMapNodeMiddleware extends Middleware {
-    private $siteMapService;
+    private SiteMapService $siteMapService;
 
     public function __construct(SiteMapService $siteMapService) {
         $this->siteMapService = $siteMapService;

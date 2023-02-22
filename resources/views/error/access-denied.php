@@ -1,0 +1,1 @@
+<a href="<?php echo $this->url->generate('home'); ?>">Home</a> | Access Denied

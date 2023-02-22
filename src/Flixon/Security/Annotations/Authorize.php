@@ -2,18 +2,15 @@
 
 namespace Flixon\Security\Annotations;
 
-/**
- * @Annotation
- */
-class Authorize {
-	public $negate, $roles;
+use Attribute;
 
-	public function __construct(array $values) {
-		$this->negate = $values['negate'] ?? false;
-		$this->roles = is_array($values['value']) ? $values['value'] : [$values['value']];
-	}
-	
-	public static function __set_state(array $array): Authorize {
-        return new Authorize(['negate' => $array['negate'], 'value' => $array['roles']]);
+#[Attribute]
+class Authorize {
+    public bool $negate;
+    public array $roles;
+
+    public function __construct(int|array $roles, bool $negate = false) {
+        $this->roles = is_array($roles) ? $roles : [$roles];
+        $this->negate = $negate;
     }
 }

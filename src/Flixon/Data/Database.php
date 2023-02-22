@@ -2,16 +2,14 @@
 
 namespace Flixon\Data;
 
-use CommonQuery;
-use DeleteQuery;
-use FluentPDO;
+use Envms\FluentPDO\Queries\{Common, Update, Delete};
 use Flixon\Common\Services\CachingService;
 use Flixon\Config\Config;
+use Flixon\Data\Queries\Select;
 use Flixon\Foundation\Application;
 use PDO;
-use UpdateQuery;
 
-class Database extends FluentPDO {
+class Database extends \Envms\FluentPDO\Query {
 	use \Flixon\Common\Traits\PropertyAccessor;
 
 	public function __construct(Application $app, CachingService $cachingService, Config $config) {
@@ -27,7 +25,7 @@ class Database extends FluentPDO {
 		//};
     }
 	
-	public function execute(string $query, array $parameters = []) {
+	public function execute(string $query, array $parameters = []): mixed {
 		// Prepare the query.
 		$stmt = $this->pdo->prepare($query);
 		
@@ -37,8 +35,8 @@ class Database extends FluentPDO {
 		return $stmt;
 	}
 
-	public function from($table, $primaryKey = null): SelectQuery {
-		$query = new SelectQuery($this, $table);
+	public function from(?string $table = null, mixed $primaryKey = null): Select {
+		$query = new Select($this, $table);
 
         if ($primaryKey !== null) {
 			$query = $this->filterByPrimaryKey($query, $query->fromTable, $primaryKey, $query->fromAlias . '.');
@@ -48,7 +46,7 @@ class Database extends FluentPDO {
 	}
 
 	// This overrides the base and allows filtering by multiple primary keys.
-	public function update($table, $set = [], $primaryKey = null): UpdateQuery {
+	public function update(?string $table = null, mixed $set = [], mixed $primaryKey = null): Update {
 		$query = parent::update($table, $set);
 
         if ($primaryKey !== null) {
@@ -59,7 +57,7 @@ class Database extends FluentPDO {
     }
 
 	// This overrides the base and allows filtering by multiple primary keys.
-	public function delete($table, $primaryKey = null): DeleteQuery {
+	public function delete(?string $table = null, mixed $primaryKey = null): Delete {
         $query = parent::delete($table);
 
         if ($primaryKey !== null) {
@@ -69,7 +67,7 @@ class Database extends FluentPDO {
         return $query;
     }
 
-	private function filterByPrimaryKey(CommonQuery $query, string $table, $primaryKey, string $prefix = ''): CommonQuery {
+	private function filterByPrimaryKey(Common $query, ?string $table, $primaryKey, string $prefix = ''): Common {
 		// Construct the where clause.
 		$where = array_combine($this->structure->getPrimaryKey($table, $prefix), !is_array($primaryKey) ? [$primaryKey] : $primaryKey);
 
