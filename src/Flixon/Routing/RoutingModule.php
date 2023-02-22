@@ -26,7 +26,7 @@ class RoutingModule extends Module {
             // Create the route collection.
             $routes = new RouteCollection();
 
-            if (file_exists(__DIR__ . '/../../App/Controllers')) {
+            if (file_exists($app->rootPath . '/src/App/Controllers')) {
                 $loader = new DelegatingLoader(
                     new LoaderResolver([
                         new Psr4DirectoryLoader(
@@ -36,7 +36,7 @@ class RoutingModule extends Module {
                     ])
                 );
             
-                $routes->addCollection($loader->load(['path' => __DIR__ . '/../../App/Controllers', 'namespace' => 'App\Controllers'], 'attribute'));
+                $routes->addCollection($loader->load(['path' => $app->rootPath . '/src/App/Controllers', 'namespace' => 'App\Controllers'], 'attribute'));
             }
 
             return $routes;
