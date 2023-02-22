@@ -15,7 +15,7 @@ trait Database {
         };
     }
 
-	public function tearDown(): void {
+    public function tearDown(): void {
         // Call the parent.
         parent::tearDown();
 
@@ -23,7 +23,7 @@ trait Database {
         $tables = $this->db->structure->getTables();
 
         foreach ($tables as $table) {
-	        $this->db->execute('TRUNCATE TABLE `' . $table . '`');
+            $this->db->execute('TRUNCATE TABLE `' . $table . '`');
         }
     }
 }

@@ -27,19 +27,19 @@ class CsvHelpers {
         return $data;
     }
 
-	public static function write(string $fileName, array $data, string $delimiter = ','): void {
-		$handle = fopen($fileName, 'w');
+    public static function write(string $fileName, array $data, string $delimiter = ','): void {
+        $handle = fopen($fileName, 'w');
 
         if (count($data) > 0) {
-	        // Writes file header.
-	        //fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF)); - This breaks the export/import online.
+            // Writes file header.
+            //fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF)); - This breaks the export/import online.
             fputcsv($handle, array_keys((array)$data[0]));
 
-	        foreach ($data as $line) {
-	            fputcsv($handle, (array)$line, $delimiter);
-	        }
+            foreach ($data as $line) {
+                fputcsv($handle, (array)$line, $delimiter);
+            }
         }
 
-	    fclose($handle);
-	}
+        fclose($handle);
+    }
 }

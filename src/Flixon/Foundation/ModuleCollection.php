@@ -7,15 +7,15 @@ use Iterator;
 use IteratorAggregate;
 
 class ModuleCollection implements IteratorAggregate {
-	private array $modules = [];
+    private array $modules = [];
 
-	public function add(string $class): ModuleCollection {
-		$this->modules[] = new $class();
+    public function add(string $class): ModuleCollection {
+        $this->modules[] = new $class();
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getIterator(): Iterator {
+    public function getIterator(): Iterator {
         return new ArrayIterator($this->modules);
     }
 }

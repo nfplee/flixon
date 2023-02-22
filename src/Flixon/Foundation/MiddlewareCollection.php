@@ -7,7 +7,7 @@ use Iterator;
 use IteratorAggregate;
 
 class MiddlewareCollection implements IteratorAggregate {
-	private array $middleware = [];
+    private array $middleware = [];
     
     public function add(string $class, int $priority = 0, array $parameters = []): MiddlewareCollection {
         $this->middleware[] = compact('class', 'parameters', 'priority');

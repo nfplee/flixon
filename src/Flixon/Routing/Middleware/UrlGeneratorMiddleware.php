@@ -11,9 +11,9 @@ use Symfony\Component\Routing\RequestContext;
 class UrlGeneratorMiddleware extends Middleware {
     private UrlGenerator $url;
 
-	public function __construct(UrlGenerator $url) {
+    public function __construct(UrlGenerator $url) {
         $this->url = $url;
-	}
+    }
 
     public function __invoke(Request $request, Response $response, callable $next = null) {
         // Create the request context.

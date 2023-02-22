@@ -178,19 +178,19 @@ class QueryTest extends TestCase {
                 'county' => 'Test',
                 'postcode' => 'Test'
             ])
-		]);
+        ]);
 
         // Insert the address.
-		$result = Query::insert($userAddress->address);
+        $result = Query::insert($userAddress->address);
 
         // Assert: Make sure the insert was successful.
         $this->assertNotFalse($result);
 
-		// Set the address id against the user address.
-		$userAddress->addressId = $userAddress->address->id;
+        // Set the address id against the user address.
+        $userAddress->addressId = $userAddress->address->id;
 
-		// Insert the user address.
-		$result = Query::insert($userAddress);
+        // Insert the user address.
+        $result = Query::insert($userAddress);
 
         // Assert: Make sure the insert was successful.
         $this->assertNotFalse($result);
@@ -229,85 +229,85 @@ class QueryTest extends TestCase {
 class Address extends Entity { }
 
 class BlogPost extends Entity {
-	public function __construct(int $authorId = null) {
-		// Set the default properties.
-		$this->authorId		= $authorId;
-		$this->dateAdded 	= time();
-	}
+    public function __construct(int $authorId = null) {
+        // Set the default properties.
+        $this->authorId        = $authorId;
+        $this->dateAdded     = time();
+    }
 
-	public function getCategory() {
-		return $this->hasOne(Category::class);
-	}
+    public function getCategory() {
+        return $this->hasOne(Category::class);
+    }
 
-	public function getAuthor(): User {
-		return $this->hasOne(User::class);
-	}
+    public function getAuthor(): User {
+        return $this->hasOne(User::class);
+    }
 }
 
 #[ClassMap('blog_posts')]
 class BlogPostExtended extends BlogPost {
     public function getName():string {
-		return $this->properties['name'] . ' Extended';
-	}
+        return $this->properties['name'] . ' Extended';
+    }
 
-	public function setName($value) {
-		$this->properties['name'] = $value;
-	}
+    public function setName($value) {
+        $this->properties['name'] = $value;
+    }
 }
 
 class Category extends Entity {
     public function getParent() {
-		return $this->hasOne(Category::class);
-	}
+        return $this->hasOne(Category::class);
+    }
 
     public function getChildren(): Enumerable {
-		return $this->hasMany(Category::class, 'parentId');
+        return $this->hasMany(Category::class, 'parentId');
     }
 }
 
 class Job extends Entity {
-	public function getUsers(): Enumerable {
-		return $this->lazy(function() {
-			return Query::from(UserJob::class)->with('user')->where('jobId', $this->id)->orderBy('user.fullName')->fetchAll();
-		});
-	}
+    public function getUsers(): Enumerable {
+        return $this->lazy(function() {
+            return Query::from(UserJob::class)->with('user')->where('jobId', $this->id)->orderBy('user.fullName')->fetchAll();
+        });
+    }
 }
 
 class Role extends Entity { }
 
 class User extends Entity {
-	public function getFirstName(): string {
-		return Utilities::splitName($this->fullName)[0];
-	}
+    public function getFirstName(): string {
+        return Utilities::splitName($this->fullName)[0];
+    }
 
-	public function getLastName(): string {
-		return Utilities::splitName($this->fullName)[1];
-	}
+    public function getLastName(): string {
+        return Utilities::splitName($this->fullName)[1];
+    }
 
-	public function getRole(): Role {
-		return $this->hasOne(Role::class);
-	}
+    public function getRole(): Role {
+        return $this->hasOne(Role::class);
+    }
 
-	public function getAddresses(): Enumerable {
-		return $this->hasMany(UserAddress::class);
-	}
+    public function getAddresses(): Enumerable {
+        return $this->hasMany(UserAddress::class);
+    }
 
-	public function getJobs(): Enumerable {
-		return $this->lazy(function() {
-			return Query::from(UserJob::class)->with('job')->where('userId', $this->id)->orderBy('job.name')->fetchAll();
-		});
-	}
+    public function getJobs(): Enumerable {
+        return $this->lazy(function() {
+            return Query::from(UserJob::class)->with('job')->where('userId', $this->id)->orderBy('job.name')->fetchAll();
+        });
+    }
 }
 
 class UserAddress extends Entity {
-	public function __construct() {
-		// Set the default properties.
-		$this->dateAdded = time();
-	}
+    public function __construct() {
+        // Set the default properties.
+        $this->dateAdded = time();
+    }
 
-	public function getAddress(): Address {
-		return $this->hasOne(Address::class);
-	}
+    public function getAddress(): Address {
+        return $this->hasOne(Address::class);
+    }
 
     public function setAddress(Address $value) {
         $this->address = $value;
@@ -315,11 +315,11 @@ class UserAddress extends Entity {
 }
 
 class UserJob extends Entity {
-	public function getUser(): User {
-		return $this->hasOne(User::class);
-	}
+    public function getUser(): User {
+        return $this->hasOne(User::class);
+    }
 
-	public function getJob(): Job {
-		return $this->hasOne(Job::class);
-	}
+    public function getJob(): Job {
+        return $this->hasOne(Job::class);
+    }
 }

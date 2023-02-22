@@ -8,6 +8,6 @@ use Flixon\SiteMap\Node as NodeInterface;
 
 class SiteMapService implements SiteMapServiceInterface {
     public function getNodeByController(string $controller): ?NodeInterface {
-		return new Node($controller);
-	}
+        return new Node($controller);
+    }
 }

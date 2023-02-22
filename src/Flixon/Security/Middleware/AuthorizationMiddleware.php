@@ -18,7 +18,7 @@ class AuthorizationMiddleware extends Middleware {
     }
 
     public function __invoke(Request $request, Response $response, callable $next = null) {
-    	// Make sure the user is allowed to view the page (if applicable).
+        // Make sure the user is allowed to view the page (if applicable).
         if ($request->attributes->has('_annotations')) {
             // Work out whether the user is allowed to view the page.
             $isAllowed = !Enumerable::from($request->attributes->get('_annotations'))->any(function($annotation) use ($request) {

@@ -16,11 +16,11 @@ class Node implements NodeInterface {
         return [];
     }
 
-	public function getRoot(): NodeInterface {
+    public function getRoot(): NodeInterface {
         return $this;
     }
 
-	public function isAdmin(): bool {
+    public function isAdmin(): bool {
         return str_contains($this->controller, 'AdminController');
     }
 }

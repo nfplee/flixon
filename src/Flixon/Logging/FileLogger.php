@@ -21,13 +21,13 @@ class FileLogger implements Logger {
     }
 
     public function log(string $level, string $message): Logger {
-		$time = $this->app->stopwatch->elapsed();
-		
+        $time = $this->app->stopwatch->elapsed();
+        
         $this->logs[] = (object)[
             'level'     => $level,
             'message'   => $message,
             'time'      => $time,
-			'elapsed'	=> $time - (count($this->logs) > 0 ? $this->logs[count($this->logs) - 1]->time : 0)
+            'elapsed'    => $time - (count($this->logs) > 0 ? $this->logs[count($this->logs) - 1]->time : 0)
         ];
 
         return $this;

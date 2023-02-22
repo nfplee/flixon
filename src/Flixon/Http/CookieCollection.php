@@ -7,13 +7,13 @@ use Iterator;
 use IteratorAggregate;
 
 class CookieCollection implements IteratorAggregate {
-	private array $cookies = [];
+    private array $cookies = [];
 
-	public function add(Cookie $cookie): CookieCollection {
-		$this->cookies[] = $cookie;
+    public function add(Cookie $cookie): CookieCollection {
+        $this->cookies[] = $cookie;
 
-		return $this;
-	}
+        return $this;
+    }
     
     public function getIterator(): Iterator {
         return new ArrayIterator($this->cookies);

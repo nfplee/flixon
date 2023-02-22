@@ -25,8 +25,8 @@ class Config {
         return new Config($array);
     }
 
-	public function load(string $path): void {
-		// Get the config files.
+    public function load(string $path): void {
+        // Get the config files.
         $files = new DirectoryIterator($path);
         
         // Set the config properties.
@@ -48,5 +48,5 @@ class Config {
                 }
             }
         }
-	}
+    }
 }

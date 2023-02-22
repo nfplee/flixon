@@ -18,7 +18,7 @@ class TaskRunnerMiddleware extends Middleware {
         $this->lang = $lang;
     }
 
-	public function __invoke(Request $request, Response $response, callable $next = null) {
+    public function __invoke(Request $request, Response $response, callable $next = null) {
         // Only execute if the url matches.
         if (strtolower($request->pathInfo) == '/task-runner') {
             // Execute the task runner.

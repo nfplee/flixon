@@ -8,6 +8,6 @@ use Flixon\Security\User as UserInterface;
 
 class UsersService implements UsersServiceInterface {
     public function getUserByUsername(string $username): ?UserInterface {
-		return new User($username);
-	}
+        return new User($username);
+    }
 }

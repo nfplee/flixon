@@ -7,8 +7,8 @@ use Flixon\Foundation\Module;
 use Flixon\Mvc\Middleware\ControllerMiddleware;
 
 class MvcModule extends Module {
-	public function register(Application $app): void {
-		// Add the middleware.
-    	$app->middleware->add(ControllerMiddleware::class, 100);
+    public function register(Application $app): void {
+        // Add the middleware.
+        $app->middleware->add(ControllerMiddleware::class, 100);
     }
 }

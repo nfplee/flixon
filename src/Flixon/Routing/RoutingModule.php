@@ -17,12 +17,12 @@ use Symfony\Component\Routing\RouteCollection;
 
 class RoutingModule extends Module {
     public function register(Application $app): void {
-    	// Add the middleware.
-    	$app->middleware->add(UrlGeneratorMiddleware::class, 900);
-    	$app->middleware->add(UrlMatcherMiddleware::class, 1100);
+        // Add the middleware.
+        $app->middleware->add(UrlGeneratorMiddleware::class, 900);
+        $app->middleware->add(UrlMatcherMiddleware::class, 1100);
 
         // Get the routes.
-    	$routes = $app->container->get('cache')->getOrAdd('routes', function() use ($app) {
+        $routes = $app->container->get('cache')->getOrAdd('routes', function() use ($app) {
             // Create the route collection.
             $routes = new RouteCollection();
 
@@ -43,9 +43,9 @@ class RoutingModule extends Module {
         }, $app->environment == Environment::PRODUCTION ? 60 * 60 : 60);
 
         // Register the routes and add an alias.
-		$app->container->add(RouteCollection::class, $routes)->map('routes', RouteCollection::class);
+        $app->container->add(RouteCollection::class, $routes)->map('routes', RouteCollection::class);
 
         // Register the url generator and add an alias.
-		$app->container->mapSingleton(UrlGenerator::class)->map('url', UrlGenerator::class);
+        $app->container->mapSingleton(UrlGenerator::class)->map('url', UrlGenerator::class);
     }
 }

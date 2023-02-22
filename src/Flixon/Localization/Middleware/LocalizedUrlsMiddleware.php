@@ -9,13 +9,13 @@ use Flixon\Http\Response;
 use Flixon\Routing\UrlGenerator;
 
 class LocalizedUrlsMiddleware extends Middleware {
-	private Config $config;
+    private Config $config;
     private UrlGenerator $url;
 
-	public function __construct(Config $config, UrlGenerator $url) {
-		$this->config = $config;
+    public function __construct(Config $config, UrlGenerator $url) {
+        $this->config = $config;
         $this->url = $url;
-	}
+    }
 
     public function __invoke(Request $request, Response $response, callable $next = null) {
         // Only do this for the root request otherwise the defaults get added multiple times. This leads to an issue where child actions produce the wrong default urls, e.g. canonical url widget.

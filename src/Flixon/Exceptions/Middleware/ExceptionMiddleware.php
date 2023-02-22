@@ -12,21 +12,21 @@ use Flixon\Http\Response;
 use Throwable;
 
 class ExceptionMiddleware extends Middleware {
-	private Application $app;
+    private Application $app;
     private EventDispatcher $event;
 
-	/**
+    /**
      * The error handlers.
      */
     public array $errorHandlers = [];
 
-	public function __construct(Application $app, EventDispatcher $event) {
-		$this->app = $app;
-		$this->event = $event;
-	}
+    public function __construct(Application $app, EventDispatcher $event) {
+        $this->app = $app;
+        $this->event = $event;
+    }
 
     public function __invoke(Request $request, Response $response, callable $next = null) {
-	    try {
+        try {
             return $next($request, $response, $next);
         } catch (Throwable $ex) {
             // Trigger the exception event (do this before serving the child request).

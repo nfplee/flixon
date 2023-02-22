@@ -7,7 +7,7 @@ use Flixon\Foundation\Module;
 
 class LoggingModule extends Module {
     public function register(Application $app): void {
-		// Register the default logger.
+        // Register the default logger.
         $app->container->mapSingleton(Logger::class, FileLogger::class)->map('log', Logger::class);
     }
 

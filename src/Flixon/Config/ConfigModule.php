@@ -8,12 +8,12 @@ use Flixon\Foundation\Module;
 
 class ConfigModule extends Module {
     public function register(Application $app): void {
-    	$config = $app->container->get('cache')->getOrAdd('config-' . $app->environment, function() use ($app) {
+        $config = $app->container->get('cache')->getOrAdd('config-' . $app->environment, function() use ($app) {
             // Create the config instance.
-			$config = new Config(['environment' => $app->environment]);
+            $config = new Config(['environment' => $app->environment]);
 
-	        // Load the config.
-	        $config->load($app->rootPath . '/config');
+            // Load the config.
+            $config->load($app->rootPath . '/config');
 
             return $config;
         }, $app->environment == Environment::PRODUCTION ? 60 * 60 : 60, false);

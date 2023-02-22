@@ -18,7 +18,7 @@ class AppModule extends Module {
         // Register the services.
         $app->container->map(LocalizationServiceInterface::class, LocalizationService::class);
         $app->container->map(SiteMapServiceInterface::class, SiteMapService::class);
-		$app->container->map(UsersServiceInterface::class, UsersService::class);
+        $app->container->map(UsersServiceInterface::class, UsersService::class);
     }
 
     public function registered(Application $app): void {

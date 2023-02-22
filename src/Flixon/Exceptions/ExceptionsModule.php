@@ -12,8 +12,8 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Throwable;
 
 class ExceptionsModule extends Module {
-	public function register(Application $app): void {
-		// Add the middleware.
+    public function register(Application $app): void {
+        // Add the middleware.
         $app->middleware->add(ExceptionMiddleware::class, 1300, [
             'errorHandlers' => [
                 [

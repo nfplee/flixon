@@ -5,5 +5,5 @@ namespace Flixon\Localization\Services;
 use Flixon\Localization\Locale;
 
 interface LocalizationService {
-	public function getLocaleByFormat(string $format): ?Locale;
+    public function getLocaleByFormat(string $format): ?Locale;
 }

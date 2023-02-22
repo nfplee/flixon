@@ -6,7 +6,7 @@ use Flixon\Common\Traits\PropertyAccessor;
 use Symfony\Component\HttpFoundation\Response as ResponseBase;
 
 class Response extends ResponseBase {
-	use PropertyAccessor;
+    use PropertyAccessor;
 
     public $callback;
 

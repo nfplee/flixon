@@ -12,7 +12,7 @@ class ErrorController extends Controller {
     #[Route('/', name: 'home')]
     public function index(Throwable $exception) {
         return $this->render('error/index', [
-            'exception'	=> $exception
+            'exception'    => $exception
         ], false);
     }
 

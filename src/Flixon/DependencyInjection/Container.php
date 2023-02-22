@@ -54,12 +54,12 @@ class Container implements ArrayAccess {
         }
 
         // Make sure the class exists.
-	    if (!class_exists($class)) {
-	        throw new Exception('No class with the name "' . $class . '" exists');
-	    }
+        if (!class_exists($class)) {
+            throw new Exception('No class with the name "' . $class . '" exists');
+        }
 
-	    // Initialize the ReflectionClass.
-	    $reflectionClass = new ReflectionClass($class);
+        // Initialize the ReflectionClass.
+        $reflectionClass = new ReflectionClass($class);
 
         // Get the constructor arguments.
         $arguments = [];
@@ -77,8 +77,8 @@ class Container implements ArrayAccess {
             }
         }
 
-	    // Create an instance of the class.
-	    $instance = $reflectionClass->newInstanceArgs($arguments);
+        // Create an instance of the class.
+        $instance = $reflectionClass->newInstanceArgs($arguments);
 
         // Inject the properties.
         foreach ($reflectionClass->getProperties() as $property) {
@@ -114,7 +114,7 @@ class Container implements ArrayAccess {
             $class = $name;
         }
 
-		// If the mapped class has already been mapped then use the existing mapping.
+        // If the mapped class has already been mapped then use the existing mapping.
         $this->map[$name] = array_key_exists($class, $this->map) ? $this->map[$class] : compact('class', 'shared');
 
         return $this;

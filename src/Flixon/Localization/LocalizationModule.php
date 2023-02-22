@@ -11,22 +11,22 @@ use Flixon\Localization\Services\LanguageService;
 
 class LocalizationModule extends Module {
     public function register(Application $app): void {
-		// Add the middleware.
-    	$app->middleware->add(LanguageLoaderMiddleware::class, 400);
-    	$app->middleware->add(LocalizationMiddleware::class, 1000);
-    	$app->middleware->add(LocalizedUrlsMiddleware::class, 500);
+        // Add the middleware.
+        $app->middleware->add(LanguageLoaderMiddleware::class, 400);
+        $app->middleware->add(LocalizationMiddleware::class, 1000);
+        $app->middleware->add(LocalizedUrlsMiddleware::class, 500);
 
         // Register the language service.
         $app->container->mapSingleton(LanguageService::class)->map('lang', LanguageService::class);
     }
 
-	public function registered(Application $app): void {
-    	// Get the config and routes.
-    	$config = $app->container->get('config');
-		$routes = $app->container->get('routes');
+    public function registered(Application $app): void {
+        // Get the config and routes.
+        $config = $app->container->get('config');
+        $routes = $app->container->get('routes');
 
-		// Add the locale prefix to the routes.
-    	foreach ($routes->all() as $name => $route) {
+        // Add the locale prefix to the routes.
+        foreach ($routes->all() as $name => $route) {
             $routes->remove($name);
         
             foreach ($config->localization->locales as $locale => $localePrefix) {

@@ -6,16 +6,16 @@ use Flixon\Foundation\Application;
 use Flixon\Http\Request;
 
 class LanguageService {
-	use \Flixon\Foundation\Traits\Application;
+    use \Flixon\Foundation\Traits\Application;
 
     private array $data = [];
     private string $path;
 
     public function __construct(Application $app) {
-		$this->path = $app->rootPath . '/resources/lang/';
+        $this->path = $app->rootPath . '/resources/lang/';
     }
 
-	/**
+    /**
      * Load language by locale.
      *
      * @param string $locale

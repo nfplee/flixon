@@ -9,7 +9,7 @@ use Iterator;
 use IteratorAggregate;
 
 class Enumerable implements ArrayAccess, Countable, IteratorAggregate {
-	protected array $enumerable;
+    protected array $enumerable;
 
     public function __construct(array $enumerable) {
         $this->enumerable = $enumerable;
@@ -65,7 +65,7 @@ class Enumerable implements ArrayAccess, Countable, IteratorAggregate {
         return new static($enumerable);
     }
 
-	public function getIterator(): Iterator {
+    public function getIterator(): Iterator {
         return new ArrayIterator($this->enumerable);
     }
 

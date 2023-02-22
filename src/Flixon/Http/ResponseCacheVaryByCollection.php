@@ -8,18 +8,18 @@ use Iterator;
 use IteratorAggregate;
 
 class ResponseCacheVaryByCollection implements ArrayAccess, IteratorAggregate {
-	private array $varyBys = [];
+    private array $varyBys = [];
 
-	public function add(string $key, callable $varyBy): ResponseCacheVaryByCollection {
-		$this->varyBys[$key] = $varyBy;
+    public function add(string $key, callable $varyBy): ResponseCacheVaryByCollection {
+        $this->varyBys[$key] = $varyBy;
 
-		return $this;
-	}
+        return $this;
+    }
     
     public function getIterator(): Iterator {
         return new ArrayIterator($this->varyBys);
-	}
-	
+    }
+    
     public function offsetGet(mixed $offset): mixed {
         return $this->varyBys[$offset];
     }

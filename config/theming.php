@@ -1,5 +1,5 @@
 <?php
 
 return [
-	'defaultTheme'  => 'theme'
+    'defaultTheme'  => 'theme'
 ];

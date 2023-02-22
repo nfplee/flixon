@@ -5,7 +5,7 @@ namespace Flixon\Common\Traits;
 use Exception;
 
 trait PropertyAccessor {
-	public function __get(string $name) {
+    public function __get(string $name) {
         if (method_exists($this, 'get' . ucfirst($name))) {
             return $this->{'get' . ucfirst($name)}();
         } else {
