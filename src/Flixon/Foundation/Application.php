@@ -107,8 +107,6 @@ class Application {
             $this->register();
         }
 
-        print_r($this->middleware);exit;
-
         // Handle the request.
         $response = $this->handle($request);
 
