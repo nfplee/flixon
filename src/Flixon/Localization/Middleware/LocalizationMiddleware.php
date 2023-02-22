@@ -2,7 +2,6 @@
 
 namespace Flixon\Localization\Middleware;
 
-use Flixon\Common\Collections\Enumerable;
 use Flixon\Config\Config;
 use Flixon\Foundation\Middleware;
 use Flixon\Http\Request;

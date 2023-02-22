@@ -2,11 +2,9 @@
 
 namespace Flixon\Security\Middleware;
 
-use Flixon\Exceptions\AccessDeniedException;
 use Flixon\Foundation\Middleware;
 use Flixon\Http\Request;
 use Flixon\Http\Response;
-use Flixon\Security\Annotations\Authorize;
 use Flixon\Security\Services\AuthenticationService;
 
 class AuthenticationMiddleware extends Middleware {
