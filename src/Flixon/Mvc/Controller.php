@@ -6,6 +6,7 @@ use Flixon\DependencyInjection\Annotations\Inject;
 use Flixon\Foundation\Traits\Application;
 use Flixon\Http\Response;
 use Flixon\Mvc\View;
+use GUMP as Gump;
 
 abstract class Controller {
 	use Application;
