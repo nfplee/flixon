@@ -19,7 +19,7 @@ class LanguageLoaderMiddleware extends Middleware {
         $this->languageService->load('default');
 
         // Load the locale resources (if applicable).
-        if ($request->locale != null) {
+        if ($request->locale) {
             $this->languageService->load($request->locale->format);
         }
 
