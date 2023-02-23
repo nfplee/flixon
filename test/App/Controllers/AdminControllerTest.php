@@ -32,6 +32,6 @@ class AdminControllerTest extends TestCase {
 
         // Assert
         $this->assertEquals(403, $response->statusCode);
-        $this->assertStringContainsString('<a href="/">Home</a> | Access Denied', $response->content);
+        $this->assertStringContainsString('<a href="/">Home</a> | Access Denied | Locale: en', $response->content);
     }
 }

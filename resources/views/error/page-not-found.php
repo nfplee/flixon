@@ -1,1 +1,1 @@
-<a href="<?php echo $this->url->generate('home'); ?>">Home</a> | Page Not Found
+<a href="<?php echo $this->url->generate('home'); ?>">Home</a> | Page Not Found | Locale: <?php echo $this->request->locale->format; ?>

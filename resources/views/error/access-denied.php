@@ -1,1 +1,1 @@
-<a href="<?php echo $this->url->generate('home'); ?>">Home</a> | Access Denied
+<a href="<?php echo $this->url->generate('home'); ?>">Home</a> | Access Denied | Locale: <?php echo $this->request->locale->format; ?>

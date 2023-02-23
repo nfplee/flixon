@@ -1,1 +1,1 @@
-<a href="<?php echo $this->url->generate('home'); ?>">Home</a> | <?php echo $exception->getMessage(); ?>
+<a href="<?php echo $this->url->generate('home'); ?>">Home</a> | <?php echo $exception->getMessage(); ?> | Locale: <?php echo $this->request->locale->format; ?>

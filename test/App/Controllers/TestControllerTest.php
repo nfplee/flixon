@@ -36,7 +36,7 @@ class TestControllerTest extends TestCase {
 
         // Assert
         $this->assertEquals(500, $response->statusCode);
-        $this->assertStringContainsString('<a href="/">Home</a> | Division by zero', $response->content);
+        $this->assertStringContainsString('<a href="/">Home</a> | Division by zero | Locale: en', $response->content);
     }
 
     public function testLangText() {
@@ -75,7 +75,7 @@ class TestControllerTest extends TestCase {
 
         // Assert
         $this->assertEquals(404, $response->statusCode);
-        $this->assertStringContainsString('<a href="/">Home</a> | Page Not Found', $response->content);
+        $this->assertStringContainsString('<a href="/">Home</a> | Page Not Found | Locale: en', $response->content);
     }
 
     public function testResponseCache() {

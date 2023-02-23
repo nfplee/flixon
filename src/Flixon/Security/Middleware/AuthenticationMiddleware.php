@@ -15,8 +15,16 @@ class AuthenticationMiddleware extends Middleware {
     }
 
     public function __invoke(Request $request, Response $response, callable $next = null) {
+        // Get/set the user for child requests.
+        if (!$request->isChildRequest()) {
+            $user = $this->authenticationService->getUser();
+            $request->session->set('_user', $user);
+        } else {
+            $user = $request->session->get('_user');
+        }
+
         // Store the user against the request.
-        $request->user = $request->parent?->user ?? $this->authenticationService->getUser();
+        $request->user = $user;
 
         return $next($request, $response, $next);
     }
