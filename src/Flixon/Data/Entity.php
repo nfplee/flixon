@@ -60,7 +60,7 @@ abstract class Entity {
     }
 
     public function get(array $properties): array {
-        return array_map(function($name) { return $this->$name; }, $properties);
+        return array_map(fn($name) => $this->$name, $properties);
     }
 
     protected function hasOne(string $class, ?string $foreignKey = null) {
