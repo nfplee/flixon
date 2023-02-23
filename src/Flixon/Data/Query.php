@@ -81,7 +81,9 @@ class Query {
         $primaryKey = $db->structure->getPrimaryKey($table);
 
         // Update the entity.
-        $result = $db->update($table, self::handleReservedWords($entity->dirtyProperties), $entity->get($primaryKey))->execute();
+        $result = $db->update($table, self::handleReservedWords($entity->dirtyProperties))
+            ->where(array_combine($primaryKey, $entity->get($primaryKey)))
+            ->execute();
         
         // Reset the dirty properties (this makes sure future updates don't try to update the properties which have not changed since they were updated).
         $entity->reset();
@@ -122,12 +124,9 @@ class Query {
         // Get the primary key.
         $primaryKey = $db->structure->getPrimaryKey($table);
 
-		if (count($primaryKey) > 1) {
-			throw new Exception('Fluent PDO does not support deleting from tables with multiple primary keys.');
-		}
-
-        // Delete the entity.
-        return $db->deleteFrom($table, $entity->get($primaryKey)[0])->execute();
+		return  $db->delete($table)
+            ->where(array_combine($primaryKey, $entity->get($primaryKey)))
+            ->execute();
     }
 
     /**
