@@ -33,7 +33,7 @@ class DatabaseStructure extends Structure {
     }
 
     public function getPrimaryKey($table, $prefix = ''): array {
-        return Enumerable::from($this->getColumns($table))->filter(fn($column) => $column['Key'] == 'PRI')->map(function($column) use ($prefix) { return $prefix . $column['Field']; })->toArray();
+        return Enumerable::from($this->getColumns($table))->filter(fn($c) => $c['Key'] == 'PRI')->map(fn($c) => $prefix . $c['Field'])->toArray();
     }
 
     public function getTable(string $foreignKey): string {

@@ -1,0 +1,1 @@
+<?php echo $param1; ?> | <?php echo $param2; ?> | <?php echo $this->url->generate('route_with_parameters', $this->request->node->urlParameters); ?>

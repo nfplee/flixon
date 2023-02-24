@@ -24,7 +24,7 @@ class EnumerableTest extends TestCase {
         $enumable = Enumerable::from(['foo', 'bar']);
 
         // Act
-        $result = $enumable->any(fn($item) => $item == 'foo');
+        $result = $enumable->any(fn($i) => $i == 'foo');
 
         // Assert
         $this->assertCount(2, $enumable);
@@ -36,7 +36,7 @@ class EnumerableTest extends TestCase {
         $enumable = Enumerable::from(['foo', 'bar']);
 
         // Act
-        $result = $enumable->any(fn($item) => $item == 'baz');
+        $result = $enumable->any(fn($i) => $i == 'baz');
 
         // Assert
         $this->assertFalse($result);
@@ -47,7 +47,7 @@ class EnumerableTest extends TestCase {
         $enumable = Enumerable::from(['foo', 'foo']);
 
         // Act
-        $result = $enumable->all(fn($item) => $item == 'foo');
+        $result = $enumable->all(fn($i) => $i == 'foo');
 
         // Assert
         $this->assertCount(2, $enumable);
@@ -59,7 +59,7 @@ class EnumerableTest extends TestCase {
         $enumable = Enumerable::from(['foo', 'bar']);
 
         // Act
-        $result = $enumable->all(fn($item) => $item == 'foo');
+        $result = $enumable->all(fn($i) => $i == 'foo');
 
         // Assert
         $this->assertFalse($result);
@@ -127,7 +127,7 @@ class EnumerableTest extends TestCase {
         $enumable = Enumerable::from(['foo', 'bar']);
 
         // Act
-        $result = $enumable->count(fn($item) => $item == 'foo');
+        $result = $enumable->count(fn($i) => $i == 'foo');
 
         // Assert
         $this->assertCount(2, $enumable);
@@ -151,7 +151,7 @@ class EnumerableTest extends TestCase {
         $enumable = Enumerable::from(['foo', 'bar']);
 
         // Act
-        $result = $enumable->filter(fn($item) => $item == 'foo');
+        $result = $enumable->filter(fn($i) => $i == 'foo');
 
         // Assert
         $this->assertCount(2, $enumable);
@@ -163,7 +163,7 @@ class EnumerableTest extends TestCase {
         $enumable = Enumerable::from(['foo', 'bar']);
 
         // Act
-        $result = $enumable->filter(fn($item) => $item == 'baz');
+        $result = $enumable->filter(fn($i) => $i == 'baz');
 
         // Assert
         $this->assertCount(0, $result);
@@ -186,7 +186,7 @@ class EnumerableTest extends TestCase {
         $enumable = Enumerable::from(['foo', 'bar']);
 
         // Act
-        $result = $enumable->first(fn($item) => $item == 'bar');
+        $result = $enumable->first(fn($i) => $i == 'bar');
 
         // Assert
         $this->assertEquals('bar', $result);
@@ -197,7 +197,7 @@ class EnumerableTest extends TestCase {
         $enumable = Enumerable::from(['foo', 'bar']);
 
         // Act
-        $result = $enumable->first(fn($item) => $item == 'baz');
+        $result = $enumable->first(fn($i) => $i == 'baz');
 
         // Assert
         $this->assertNull($result);
@@ -226,7 +226,7 @@ class EnumerableTest extends TestCase {
         ]);
 
         // Act
-        $result = $enumable->group(fn($item) => $item->foo);
+        $result = $enumable->group(fn($i) => $i->foo);
 
         // Assert
         $this->assertCount(5, $enumable);
@@ -244,7 +244,7 @@ class EnumerableTest extends TestCase {
         ]);
 
         // Act
-        $result = $enumable->group(fn($item) => $item->foo->bar);
+        $result = $enumable->group(fn($i) => $i->foo->bar);
 
         // Assert
         $this->assertCount(5, $enumable);
@@ -293,7 +293,7 @@ class EnumerableTest extends TestCase {
         $enumable = Enumerable::from(['foo', 'bar']);
 
         // Act
-        $result = $enumable->last(fn($item) => $item == 'foo');
+        $result = $enumable->last(fn($i) => $i == 'foo');
 
         // Assert
         $this->assertEquals('foo', $result);
@@ -304,7 +304,7 @@ class EnumerableTest extends TestCase {
         $enumable = Enumerable::from(['foo', 'bar']);
 
         // Act
-        $result = $enumable->last(fn($item) => $item == 'baz');
+        $result = $enumable->last(fn($i) => $i == 'baz');
 
         // Assert
         $this->assertNull($result);
@@ -319,7 +319,7 @@ class EnumerableTest extends TestCase {
         ]);
 
         // Act
-        $result = $enumable->map(fn($item) => $item->foo);
+        $result = $enumable->map(fn($i) => $i->foo);
 
         // Assert
         $this->assertNotEquals('Foo', $enumable[0]);
@@ -335,7 +335,7 @@ class EnumerableTest extends TestCase {
         ]);
 
         // Act
-        $result = $enumable->mapCollection(fn($item) => $item->bar);
+        $result = $enumable->mapCollection(fn($i) => $i->bar);
 
         // Assert
         $this->assertCount(3, $enumable);

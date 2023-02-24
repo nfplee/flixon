@@ -9,6 +9,8 @@ class User implements UserInterface {
     public ?int $id;
     public int $roleId;
     public string $username;
+    public string $password = '';
+    public string $salt = '';
 
     public function __construct(string $username, ?int $roleId = null) {
         $this->id = 1;

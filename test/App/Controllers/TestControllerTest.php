@@ -122,6 +122,30 @@ class TestControllerTest extends TestCase {
         $this->assertStringContainsString('Canonical', $response->content);
     }
 
+    public function testRouteWithParameters() {
+        // Arrange: Create the request.
+        $request = $this->createRequest('/test/route-with-parameters/foo-bar');
+
+        // Act
+        $response = $this->app->handle($request);
+
+        // Assert
+        $this->assertEquals(200, $response->statusCode);
+        $this->assertStringContainsString('foo | bar | /test/route-with-parameters/foo-bar', $response->content);
+    }
+
+    public function testRouteWithParametersReverse() {
+        // Arrange: Create the request.
+        $request = $this->createRequest('/test/route-with-parameters-reverse/foo-bar');
+
+        // Act
+        $response = $this->app->handle($request);
+
+        // Assert
+        $this->assertEquals(200, $response->statusCode);
+        $this->assertStringContainsString('bar | foo | /test/route-with-parameters-reverse/foo-bar', $response->content);
+    }
+
     public function testUrlGenerator() {
         // Arrange: Create the request.
         $request = $this->createRequest('/test/url-generator');

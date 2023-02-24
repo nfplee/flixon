@@ -82,7 +82,7 @@ class Container implements ArrayAccess {
 
         // Inject the properties.
         foreach ($reflectionClass->getProperties() as $property) {
-            if (($attribute = Enumerable::from($property->getAttributes(Inject::class))->first()) != null) {
+            if ($attribute = Enumerable::from($property->getAttributes(Inject::class))->first()) {
                 $property->setAccessible(true);
                 $property->setValue($instance, $this->get($attribute->newInstance()->class));
             }

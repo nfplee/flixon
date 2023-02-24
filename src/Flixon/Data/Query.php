@@ -140,7 +140,7 @@ class Query {
         $reflectionClass = new ReflectionClass($class);
 
         // If a mapping exists then use that else format using convention.
-        if (($attribute = Enumerable::from($reflectionClass->getAttributes(ClassMap::class))->first()) != null) {
+        if ($attribute = Enumerable::from($reflectionClass->getAttributes(ClassMap::class))->first()) {
             return $attribute->newInstance()->table;
         } else {
             return strtolower(Utilities::splitUpperCase(Inflector::pluralize(Utilities::stripNamespaceFromClass($class)), '_'));

@@ -30,11 +30,8 @@ class UrlMatcherMiddleware extends Middleware {
             // Try to get a matching route for the request and add the annotations (this will fire a ResourceNotFoundException if no route matched).
             $request->attributes->add($matcher->match($request->pathInfo));
         } else {
-            // Get the class and method for the child request.
-            list($class, $method) = explode('::', $request->attributes->get('_controller'));
-
             // Add the annotations for the child request (shouldn't need the class annotations).
-            $request->attributes->set('_annotations', array_map(fn($attribute) => $attribute->newInstance(), (new ReflectionMethod($class, $method))->getAttributes()));
+            $request->attributes->set('_annotations', array_map(fn($a) => $a->newInstance(), (new ReflectionMethod($request->attributes->get('_controller')))->getAttributes()));
         }
 
         return $next($request, $response, $next);

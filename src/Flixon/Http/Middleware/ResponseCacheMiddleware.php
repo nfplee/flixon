@@ -28,7 +28,7 @@ class ResponseCacheMiddleware extends Middleware {
 
     public function __invoke(Request $request, Response $response, callable $next = null) {
         // Try to get a response cache attribute (if response caching is enabled).
-        if ($this->config->http->responseCacheEnabled && $request->attributes->has('_annotations') && ($responseCache = Enumerable::from($request->attributes->get('_annotations'))->first(fn($annotation) => $annotation instanceof ResponseCache)) != null) {
+        if ($this->config->http->responseCacheEnabled && $request->attributes->has('_annotations') && $responseCache = Enumerable::from($request->attributes->get('_annotations'))->first(fn($a) => $a instanceof ResponseCache)) {
             // Get the cache key.
             $key = 'response-cache-' . str_replace(':', '-', str_replace('\\', '-', $request->attributes->get('_controller'))) . ($responseCache->varyBy != null ? '-' . Enumerable::from(explode(';', $responseCache->varyBy))->map(function($key) use ($request) {
                 switch ($key) {
@@ -61,7 +61,7 @@ class ResponseCacheMiddleware extends Middleware {
             $request->attributes->set('_cache', $key);
 
             // Return the cached response (if applicable).
-            if (($response->content = $this->cachingService->get($key, $responseCache->duration)) != null) {
+            if ($response->content = $this->cachingService->get($key, $responseCache->duration)) {
                 // If it's the root cached request then replace the cache wrapper.
                 if (!$request->isChildRequest() || !$request->parent->attributes->has('_cache')) {
                     // Look for all the cached child requests within the response content.

@@ -56,6 +56,22 @@ class TestController extends Controller {
         return $this->render('test/child-controller', [], false);
     }
 
+    #[Route('/route-with-parameters/{param1}-{param2}', name: 'route_with_parameters')]
+    public function routeWithParameters(string $param1, string $param2): Response {
+        return $this->render('test/route-with-parameters', [
+            'param1' => $param1,
+            'param2' => $param2
+        ], false);
+    }
+
+    #[Route('/route-with-parameters-reverse/{param2}-{param1}', name: 'route_with_parameters_reverse')]
+    public function routeWithParametersReverse(string $param1, string $param2): Response {
+        return $this->render('test/route-with-parameters-reverse', [
+            'param1' => $param1,
+            'param2' => $param2
+        ], false);
+    }
+
     #[Route('/url-generator')]
     public function urlGenerator(): Response {
         return $this->render('test/url-generator', [], false);

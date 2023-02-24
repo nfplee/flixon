@@ -10,6 +10,7 @@ use Flixon\Http\Response;
 use Flixon\Mvc\ControllerResolver;
 use Flixon\Mvc\Annotations\Layout;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
+use ReflectionMethod;
 
 class ControllerMiddleware extends Middleware {
     private Container $container;
@@ -29,15 +30,19 @@ class ControllerMiddleware extends Middleware {
 
         // Set the response against the controller.
         $controller[0]->response = $response;
-        
-        // Set the url parameters against the node (if applicable).
-        if ($request->node) {
-            $request->node->urlParameters = $arguments;
-        }
 
         // Set the layout (make sure it uses the last annotation (against the method and not the class) if multiple found).
-        if ($request->attributes->has('_annotations') && ($annotation = Enumerable::from($request->attributes->get('_annotations'))->first(fn($annotation) => $annotation instanceof Layout)) != null) {
+        if ($request->attributes->has('_annotations') && $annotation = Enumerable::from($request->attributes->get('_annotations'))->first(fn($a) => $a instanceof Layout)) {
             $controller[0]->view->layout = $annotation->layout;
+        }
+
+        // Set the url parameters against the node (if applicable).
+        if ($request->node) {
+            // Get the parameter keys.
+            $keys = array_map(fn($p) => $p->getName(), (new ReflectionMethod($request->attributes->get('_controller')))->getParameters());
+
+            // Set the url parameters (including the keys). This can then be fed into the UrlGenerator.
+            $request->node->urlParameters = array_combine($keys, $arguments);
         }
 
         // Call the method against the controller.
