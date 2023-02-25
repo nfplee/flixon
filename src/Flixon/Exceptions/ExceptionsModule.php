@@ -7,6 +7,7 @@ use Flixon\Foundation\Application;
 use Flixon\Foundation\Environment;
 use Flixon\Foundation\Module;
 use Flixon\Http\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Throwable;
@@ -20,6 +21,11 @@ class ExceptionsModule extends Module {
                     'class'         => AccessDeniedException::class,
                     'handler'       => 'App\Controllers\ErrorController::accessDenied',
                     'statusCode'    => Response::HTTP_FORBIDDEN
+                ],
+                [
+                    'class'         => BadRequestHttpException::class,
+                    'handler'       => 'App\Controllers\ErrorController::index',
+                    'statusCode'    => Response::HTTP_BAD_REQUEST
                 ],
                 [
                     'class'         => MethodNotAllowedException::class,
