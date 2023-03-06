@@ -43,7 +43,7 @@ class Config {
                 $hasSpecific = file_exists($path . '/' . $name . '.' . $this->environment . '.php');
 
                 // If the environment matches or has not been supplied and there is not an environment specific version.
-                if (($environment == null && !$hasSpecific) || $environment == $this->environment) {
+                if (($environment === null && !$hasSpecific) || $environment === $this->environment) {
                     $this->$name = (object)(require $file->getPathname());
                 }
             }

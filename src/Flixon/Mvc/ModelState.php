@@ -16,7 +16,7 @@ class ModelState {
     }
 
     public function isValid(string $prefix = ''): bool {
-        return !array_key_exists($prefix, $this->errors) || count($this->errors[$prefix]) == 0;
+        return !array_key_exists($prefix, $this->errors) || count($this->errors[$prefix]) === 0;
     }
 
     public function setErrors(array $errors, string $prefix = ''): ModelState {

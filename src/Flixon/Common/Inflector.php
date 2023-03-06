@@ -11,7 +11,7 @@ class Inflector {
      * @return bool Whether the string is singular.
      */
     public static function isSingular(string $word): bool {
-        return self::singularize($word) == $word;
+        return self::singularize($word) === $word;
     }
 
     /**
@@ -56,7 +56,7 @@ class Inflector {
         $lowercasedWord = strtolower($word);
 
         foreach ($uncountableRules as $uncountable) {
-            if (substr($lowercasedWord, -1 * strlen($uncountable)) == $uncountable) {
+            if (substr($lowercasedWord, -1 * strlen($uncountable)) === $uncountable) {
                 return $word;
             }
         }
@@ -124,7 +124,7 @@ class Inflector {
         $lowercasedWord = strtolower($word);
 
         foreach ($uncountableRules as $uncountable) {
-            if (substr($lowercasedWord, -1 * strlen($uncountable)) == $uncountable) {
+            if (substr($lowercasedWord, -1 * strlen($uncountable)) === $uncountable) {
                 return $word;
             }
         }

@@ -25,7 +25,7 @@ class DatabaseStructure extends Structure {
     public function getColumns(string $table): array {
         return $this->cachingService->getOrAdd('columns-' . $table, function() use ($table) {
             return $this->db->execute('SHOW COLUMNS FROM `' . $table . '`')->fetchAll(PDO::FETCH_ASSOC);
-        }, $this->app->environment == Environment::PRODUCTION ? 60 * 60 * 24 : 60, false);
+        }, $this->app->environment === Environment::PRODUCTION ? 60 * 60 * 24 : 60, false);
     }
 
     public function getForeignKey($table, bool $singularize = true): string {
@@ -33,7 +33,7 @@ class DatabaseStructure extends Structure {
     }
 
     public function getPrimaryKey($table, $prefix = ''): array {
-        return Enumerable::from($this->getColumns($table))->filter(fn($c) => $c['Key'] == 'PRI')->map(fn($c) => $prefix . $c['Field'])->toArray();
+        return Enumerable::from($this->getColumns($table))->filter(fn($c) => $c['Key'] === 'PRI')->map(fn($c) => $prefix . $c['Field'])->toArray();
     }
 
     public function getTable(string $foreignKey): string {
@@ -43,6 +43,6 @@ class DatabaseStructure extends Structure {
     public function getTables(): array {
         return $this->cachingService->getOrAdd('tables', function() {
             return $this->db->execute('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN);
-        }, $this->app->environment == Environment::PRODUCTION ? 60 * 60 * 24 : 60, false);
+        }, $this->app->environment === Environment::PRODUCTION ? 60 * 60 * 24 : 60, false);
     }
 }

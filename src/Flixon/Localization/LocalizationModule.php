@@ -35,7 +35,7 @@ class LocalizationModule extends Module {
                 $localizedRoute->setRequirement('_locale', preg_quote($locale));
                 $localizedRoute->setDefault('_canonical_route', $name);
                 $localizedRoute->setPath($localePrefix . ($route->getPath() === '/' ? '' : $route->getPath()));
-                $routes->add($name . ($localePrefix != '' ? '.' . $locale : ''), $localizedRoute);
+                $routes->add($name . ($localePrefix !== '' ? '.' . $locale : ''), $localizedRoute);
             }
         }
     }

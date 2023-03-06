@@ -10,7 +10,7 @@ class PagedEnumerable extends Enumerable {
         // Make sure the page placeholder has not been encoded.
         $url = str_replace('%25d', '%d', $url);
 
-        if ($page == 1) {
+        if ($page === 1) {
             return str_replace('?&', '?', str_replace('?page=%d', (strpos($url, '&') ? '?' : ''), str_replace('&page=%d', '', $url)));
         } else {
             return str_replace('%d', $page, $url);
@@ -45,7 +45,7 @@ class PagedEnumerable extends Enumerable {
 
         if ($this->totalCount > $this->pageSize) {
             for ($i = $this->page <= 2 ? 1 : $this->page - 2; $i <= ($this->page >= $this->totalPages - 2 ? $this->totalPages : $this->page + 2); $i++) {
-                if ($this->page == $i) {
+                if ($this->page === $i) {
                     $pager .= '<span class="current">' . $i . '</span>';
                 } else {
                     $pager .= '<a href="' . $this->getUrl($url, $i) . '" data-page="' . $i . '">' . $i . '</a>';

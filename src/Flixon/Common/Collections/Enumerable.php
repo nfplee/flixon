@@ -24,7 +24,7 @@ class Enumerable implements ArrayAccess, Countable, IteratorAggregate {
     }
 
     public function all(callable $callback = null, int $flag = 0): bool {
-        return $this->count($callback, $flag) == $this->count();
+        return $this->count($callback, $flag) === $this->count();
     }
 
     public function any(callable $callback = null, int $flag = 0): bool {
@@ -40,7 +40,7 @@ class Enumerable implements ArrayAccess, Countable, IteratorAggregate {
     }
 
     public function count(callable $callback = null, int $flag = 0): int {
-        return count($callback != null ? $this->filter($callback, $flag)->toArray() : $this->enumerable);
+        return count($callback !== null ? $this->filter($callback, $flag)->toArray() : $this->enumerable);
     }
 
     public function distinct(): Enumerable {
@@ -56,7 +56,7 @@ class Enumerable implements ArrayAccess, Countable, IteratorAggregate {
     }
 
     public function first(callable $callback = null, int $flag = 0) {
-        $enumerable = $callback != null ? $this->filter($callback, $flag)->toArray() : $this->enumerable;
+        $enumerable = $callback !== null ? $this->filter($callback, $flag)->toArray() : $this->enumerable;
         
         return array_shift($enumerable);
     }
@@ -73,7 +73,7 @@ class Enumerable implements ArrayAccess, Countable, IteratorAggregate {
         $enumerable = [];
 
         foreach ($this->enumerable as $value) {
-            $key = $callback != null ? $callback($value) : $value;
+            $key = $callback !== null ? $callback($value) : $value;
 
             if (!array_key_exists($key, $enumerable)) {
                 $enumerable[$key] = Enumerable::from([]);
@@ -93,7 +93,7 @@ class Enumerable implements ArrayAccess, Countable, IteratorAggregate {
     }
 
     public function keys(?string $searchValue = null): Enumerable {
-        return new static($searchValue != null ? array_keys($this->enumerable, $searchValue) : array_keys($this->enumerable));
+        return new static($searchValue !== null ? array_keys($this->enumerable, $searchValue) : array_keys($this->enumerable));
     }
 
     public function last(callable $callback = null, int $flag = 0) {
@@ -143,7 +143,7 @@ class Enumerable implements ArrayAccess, Countable, IteratorAggregate {
     public function sort(callable $callback = null, bool $maintainIndexAssociation = false): Enumerable {
         $enumerable = $this->enumerable;
 
-        if ($callback != null) {
+        if ($callback !== null) {
             if ($maintainIndexAssociation) {
                 uasort($enumerable, $callback);
             } else {
@@ -161,7 +161,7 @@ class Enumerable implements ArrayAccess, Countable, IteratorAggregate {
     }
 
     public function sum(callable $callback = null): float {
-        return array_sum($callback != null ? $this->map($callback)->toArray() : $this->enumerable);
+        return array_sum($callback !== null ? $this->map($callback)->toArray() : $this->enumerable);
     }
 
     public function toArray(): array {

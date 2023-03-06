@@ -13,7 +13,7 @@ class Request extends RequestBase {
     public $catch = true, $locale = null, $node = null, $parent = null, $user = null;
 
     public function isAjax(): bool {
-        return strtolower($this->server->get('HTTP_X_REQUESTED_WITH', '')) == 'xmlhttprequest';
+        return strtolower($this->server->get('HTTP_X_REQUESTED_WITH', '')) === 'xmlhttprequest';
     }
 
     public function isBot(): bool {

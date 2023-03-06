@@ -41,7 +41,7 @@ class Container implements ArrayAccess {
         $map = array_key_exists($name, $this->map) ? $this->map[$name] : null;
 
         // If a mapping doesn't exist then use the name.
-        $class = $map != null ? $map['class'] : $name;
+        $class = $map !== null ? $map['class'] : $name;
 
         // If an instance has already been defined then return it.
         if (array_key_exists($class, $this->instances)) {
@@ -89,7 +89,7 @@ class Container implements ArrayAccess {
         }
 
         // If a mapping exists and it is a shared mapping then add it to the instances so that it is returned next time.
-        if ($map != null && $map['shared']) {
+        if ($map !== null && $map['shared']) {
             $this->add($class, $instance);
         }
 

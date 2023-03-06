@@ -39,7 +39,7 @@ class LanguageService {
      */
     public function get(string $value, string ...$arguments): string {
         // Make sure the local is not null (this prevents an error during testing).
-        if ($this->request->locale != null && !empty($this->data[$this->request->locale->format][$value])) {
+        if ($this->request->locale !== null && !empty($this->data[$this->request->locale->format][$value])) {
             return vsprintf($this->data[$this->request->locale->format][$value], $arguments);
         } else if (!empty($this->data['default'][$value])) {
             return vsprintf($this->data['default'][$value], $arguments);

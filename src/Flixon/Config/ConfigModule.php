@@ -16,7 +16,7 @@ class ConfigModule extends Module {
             $config->load($app->rootPath . '/config');
 
             return $config;
-        }, $app->environment == Environment::PRODUCTION ? 60 * 60 : 60, false);
+        }, $app->environment === Environment::PRODUCTION ? 60 * 60 : 60, false);
 
         // Add the config instance and an alias.
         $app->container->add(Config::class, $config)->map('config', Config::class);

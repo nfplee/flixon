@@ -14,7 +14,7 @@ class User implements UserInterface {
 
     public function __construct(string $username, ?int $roleId = null) {
         $this->id = 1;
-        $this->roleId = $roleId ?? ($username == 'admin' ? Roles::ADMIN : Roles::USER);
+        $this->roleId = $roleId ?? ($username === 'admin' ? Roles::ADMIN : Roles::USER);
         $this->username = $username;
     }
 }

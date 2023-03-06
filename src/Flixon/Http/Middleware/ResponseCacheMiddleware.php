@@ -30,7 +30,7 @@ class ResponseCacheMiddleware extends Middleware {
         // Try to get a response cache attribute (if response caching is enabled).
         if ($this->config->http->responseCacheEnabled && $request->attributes->has('_annotations') && $responseCache = Enumerable::from($request->attributes->get('_annotations'))->first(fn($a) => $a instanceof ResponseCache)) {
             // Get the cache key.
-            $key = 'response-cache-' . str_replace(':', '-', str_replace('\\', '-', $request->attributes->get('_controller'))) . ($responseCache->varyBy != null ? '-' . Enumerable::from(explode(';', $responseCache->varyBy))->map(function($key) use ($request) {
+            $key = 'response-cache-' . str_replace(':', '-', str_replace('\\', '-', $request->attributes->get('_controller'))) . ($responseCache->varyBy !== null ? '-' . Enumerable::from(explode(';', $responseCache->varyBy))->map(function($key) use ($request) {
                 switch ($key) {
                     case 'locale':
                         return 'locale=' . $request->locale->id;

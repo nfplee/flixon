@@ -61,7 +61,7 @@ class FileCachingService implements CachingService {
         foreach (scandir($this->path) as $file) {
             $filename = $this->path . '/' . $file;
 
-            if (strpos($file, $prefix) === 0 && ($duration == null || filemtime($filename) < time() - $duration)) {
+            if (strpos($file, $prefix) === 0 && ($duration === null || filemtime($filename) < time() - $duration)) {
                 unlink($filename);
             }
         }

@@ -20,7 +20,7 @@ class TaskRunnerMiddleware extends Middleware {
 
     public function __invoke(Request $request, Response $response, callable $next = null) {
         // Only execute if the url matches.
-        if (strtolower($request->pathInfo) == '/task-runner') {
+        if (strtolower($request->pathInfo) === '/task-runner') {
             // Execute the task runner.
             $this->container->get(TaskRunner::class)->execute();
 

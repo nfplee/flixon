@@ -81,7 +81,7 @@ class Select extends SelectBase {
             // Make sure the with clause doesn't already exist.
             if (!in_array($name, $this->with)) {
                 // If the last part of the path then pass the overrides.
-                if ($i == count($path) - 1) {
+                if ($i === count($path) - 1) {
                     $this->withOne($name, $table, $foreignKey);
                 } else {
                     $this->withOne($name);

@@ -67,7 +67,7 @@ class Query {
      */
     public static function update(Entity $entity): mixed {
         // First make sure the entity has changed.
-        if (count($entity->dirtyProperties) == 0) {
+        if (count($entity->dirtyProperties) === 0) {
             return true;
         }
 

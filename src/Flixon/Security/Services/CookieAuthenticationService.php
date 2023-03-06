@@ -20,7 +20,7 @@ class CookieAuthenticationService implements AuthenticationService {
     }
 
     public function authenticate(User $user, string $password): bool {
-        return $user->password == hash('sha256', $password . $user->salt);
+        return $user->password === hash('sha256', $password . $user->salt);
     }
 
     public function getUser(): User {
@@ -32,7 +32,7 @@ class CookieAuthenticationService implements AuthenticationService {
             $user = $this->usersService->getUserByUsername($this->request->cookies->get('username'));
 
             // If a matching user found and the token matches then re-issue the cookie else set the user to null.
-            if ($user && $this->request->cookies->get('token') == hash('sha256', $user->username . $user->salt)) {
+            if ($user && $this->request->cookies->get('token') === hash('sha256', $user->username . $user->salt)) {
                 $this->login($user, true);
             } else {
                 $user = null;

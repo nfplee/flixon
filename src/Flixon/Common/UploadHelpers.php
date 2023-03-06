@@ -55,11 +55,11 @@ class UploadHelpers {
         } else {
             $extension = strtolower(strrchr($fileName, '.'));
 
-            if ($extension == '.gif') {
+            if ($extension === '.gif') {
                 $image = imagecreatefromgif($tempFile);
-            } elseif ($extension == '.jpg' || $extension == '.jpeg') {
+            } elseif ($extension === '.jpg' || $extension === '.jpeg') {
                 $image = imagecreatefromjpeg($tempFile);
-            } elseif ($extension == '.png') {
+            } elseif ($extension === '.png') {
                 $image = imagecreatefrompng($tempFile);
             }
 
@@ -76,11 +76,11 @@ class UploadHelpers {
             imagefill($thumbnail, 0, 0, $bg); 
             imagecopyresampled($thumbnail, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-            if ($extension == '.gif') {
+            if ($extension === '.gif') {
                 imagegif($thumbnail, $path . '/' . $fileName, $quality);
-            } elseif ($extension == '.jpg' || $extension == '.jpeg') {
+            } elseif ($extension === '.jpg' || $extension === '.jpeg') {
                 imagejpeg($thumbnail, $path . '/' . $fileName, $quality);
-            } elseif ($extension == '.png') {
+            } elseif ($extension === '.png') {
                 imagepng($thumbnail, $path . '/' . $fileName, $quality);
             }
             
@@ -120,7 +120,7 @@ class UploadHelpers {
      * @return   boolean
      */
     public static function validateFileSize(string $tempFile, int $maxFileSize): bool {
-        return filesize($tempFile) <= $maxFileSize || $maxFileSize == 0;
+        return filesize($tempFile) <= $maxFileSize || $maxFileSize === 0;
     }
 
     /**
@@ -134,6 +134,6 @@ class UploadHelpers {
     public static function validateSize(string $tempFile, int $maxWidth, int $maxHeight): bool {
         list($width, $height) = getimagesize($tempFile);
 
-        return ($width <= $maxWidth && $height <= $maxHeight) || ($maxWidth == 0 && $maxHeight == 0);
+        return ($width <= $maxWidth && $height <= $maxHeight) || ($maxWidth === 0 && $maxHeight === 0);
     }
 }

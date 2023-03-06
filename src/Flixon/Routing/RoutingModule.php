@@ -40,7 +40,7 @@ class RoutingModule extends Module {
             }
 
             return $routes;
-        }, $app->environment == Environment::PRODUCTION ? 60 * 60 : 60);
+        }, $app->environment === Environment::PRODUCTION ? 60 * 60 : 60);
 
         // Register the routes and add an alias.
         $app->container->add(RouteCollection::class, $routes)->map('routes', RouteCollection::class);
